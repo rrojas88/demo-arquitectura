@@ -11,11 +11,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-
-
-
-public class AuthUserRoles implements UserDetails {
-    
+// Entidad: UsuarioPrincipal(Video)
+public class UserRolesPrincipal implements UserDetails {
     
     private String name;
     private String email;
@@ -23,10 +20,11 @@ public class AuthUserRoles implements UserDetails {
     private Byte active;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public AuthUserRoles(
+    public UserRolesPrincipal(
             String name, String email, 
             String password, Byte active, 
-            Collection<? extends GrantedAuthority> authorities) {
+            Collection<? extends GrantedAuthority> authorities 
+    ) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -35,12 +33,13 @@ public class AuthUserRoles implements UserDetails {
     }
     
     // Define permisos/provilegios del Usuario (Autenticacion)
-    public static AuthUserRoles build ( User user ){
+    public static UserRolesPrincipal build ( User user ){
         List<GrantedAuthority> authorities = user.getRoles()
             .stream()
-            .map( rol -> new SimpleGrantedAuthority (rol.getName().trim() )).collect( Collectors.toList() );
+            .map( rol -> new SimpleGrantedAuthority (rol.getName().name() ))
+            .collect( Collectors.toList() );
         
-        return new AuthUserRoles( user.getName(), user.getEmail(),
+        return new UserRolesPrincipal( user.getName(), user.getEmail(),
             user.getPassword(), user.getActive(), authorities
         );
     }
@@ -81,7 +80,6 @@ public class AuthUserRoles implements UserDetails {
     }
     
     // Nuevos
-
     public String getEmail() {
         return email;
     }
@@ -89,6 +87,5 @@ public class AuthUserRoles implements UserDetails {
     public Byte getActive() {
         return active;
     }
-    
     
 }

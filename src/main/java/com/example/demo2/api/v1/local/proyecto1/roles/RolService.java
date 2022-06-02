@@ -15,8 +15,12 @@ public class RolService {
     @Autowired
     RolRepository rolRepository;
     
-    public Optional<Rol> obtenerPorNombre( String name ){
+    public Optional<Rol> obtenerPorNombre( RolName name ){
         return rolRepository.findByName(name);
+    }
+    
+    public void save(Rol rol){
+        rolRepository.save(rol);
     }
     
 }

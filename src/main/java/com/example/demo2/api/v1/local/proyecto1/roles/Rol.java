@@ -2,6 +2,7 @@
 package com.example.demo2.api.v1.local.proyecto1.roles;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -13,13 +14,16 @@ public class Rol {
     @Column( unique = true, nullable = false )
     private Integer id;
     
-    private String name;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private RolName name;
+    //private String name;
     private Byte active;
     
     public Rol(){
     }
 
-    public Rol(String name) {
+    public Rol(@NotNull RolName name) {
         this.name = name;
         this.active = 1;
     }
@@ -32,11 +36,11 @@ public class Rol {
         this.id = id;
     }
 
-    public String getName() {
+    public RolName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(RolName name) {
         this.name = name;
     }
 

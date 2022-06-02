@@ -47,6 +47,4 @@ public class UserRol {
         this.rol_id = rol_id;
     }
     
-    
-    
 }

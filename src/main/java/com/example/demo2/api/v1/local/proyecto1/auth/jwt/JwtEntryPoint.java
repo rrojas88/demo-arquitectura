@@ -1,5 +1,5 @@
 
-package com.example.demo2.api.v1.local.proyecto1.auth;
+package com.example.demo2.api.v1.local.proyecto1.auth.jwt;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -21,7 +21,7 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e ) throws IOException, ServletException {
-        logger.error("Ha fallado el Metodo: commence en JwtEntryPoint.");
+        logger.error("= = = Ha fallado el Metodo: commence en JwtEntryPoint. ");
         
         res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No autorizado");
     }

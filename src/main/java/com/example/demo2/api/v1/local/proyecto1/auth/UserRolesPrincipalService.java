@@ -11,18 +11,20 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class AuthUserRolesService implements UserDetailsService {
+public class UserRolesPrincipalService implements UserDetailsService {
 
     @Autowired
     UserService userService;
     
-    
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.obtenerPorCorreo(username).get();
-        return AuthUserRoles.build(user);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        // Obtiene el Usuario desde la BD [ por nombre ]
+        //User user = userService.obtenerPorNombre(username).get();
+        // Obtiene el Usuario desde la BD [ por Correo ]
+        User user = userService.obtenerPorCorreo(email).get();
+
+        // Convierte el Usuario en el "Principal" con sus privilegios
+        return UserRolesPrincipal.build(user);
     }
-    
-    
     
 }
