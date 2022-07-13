@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1/local/auth")
 @CrossOrigin
 public class AuthController {
     
@@ -60,7 +61,7 @@ public class AuthController {
         if( bindingResult.hasErrors() ){
             message = "Campos erroneos o email inválido";
         }
-        if( userService.existePorCorreo( userDto.getEmail() ) && message.equals("") ){
+        if( userService.existsByEmail( userDto.getEmail() ) && message.equals("") ){
             message = "Este correo ya está registrado";
         }
         if( ! message.equals("") ){
@@ -73,16 +74,16 @@ public class AuthController {
         );
         
         Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.obtenerPorNombre(RolName.ROLE_LECTURA).get());
+        roles.add(rolService.getByName(RolName.ROLE_LECTURA).get());
         if( userDto.getRoles().contains("Usuario") || userDto.getRoles().contains("Usuario normal") ){
-            roles.add( rolService.obtenerPorNombre(RolName.ROLE_USUARIO).get() );
+            roles.add( rolService.getByName(RolName.ROLE_USUARIO).get() );
         }
         if( userDto.getRoles().contains("Admin") || userDto.getRoles().contains("Administrador") ){
-            roles.add( rolService.obtenerPorNombre(RolName.ROLE_ADMIN).get() );
+            roles.add( rolService.getByName(RolName.ROLE_ADMIN).get() );
         }
         user.setRoles(roles);
         
-        userService.guardar(user);
+        userService.save(user);
         message = "Usuario guardado";
         
         return new ResponseEntity( new MessageLocal(message), HttpStatus.CREATED );
@@ -122,6 +123,13 @@ public class AuthController {
         );
         
         return new ResponseEntity(responseLoginDto, HttpStatus.OK );
+    }
+    
+    @GetMapping("/test")
+    public ResponseEntity<ResponseLoginDto> test ( )
+    {
+        String message = "Get del Auth/test = OK ";
+        return new ResponseEntity( new MessageLocal(message), HttpStatus.OK );
     }
     
 }

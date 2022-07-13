@@ -12,9 +12,28 @@ public class Department {
     @Column( unique = true, nullable = false )
     private Integer id;
     
+    @Column( unique = true )
     private String code;
+    @Column( unique = true )
     private String name;
     private Byte active;
+
+    public Department() {
+        this.active = 1;
+    }
+
+    public Department(String code, String name ) {
+        this.code = code;
+        this.name = name;
+        this.active = 1;
+    }
+    
+    public Department(Integer id, String code, String name, Byte active) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.active = active;
+    }
 
     public Integer getId() {
         return id;
@@ -47,4 +66,11 @@ public class Department {
     public void setActive( Byte active ) {
         this.active = active;
     }
+
+    @Override
+    public String toString() {
+        return "Department{" + "id=" + id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
+    }
+    
+    
 }

@@ -19,9 +19,9 @@ public class UserRolesPrincipalService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Obtiene el Usuario desde la BD [ por nombre ]
-        //User user = userService.obtenerPorNombre(username).get();
+        //User user = userService.getByName(username).get();
         // Obtiene el Usuario desde la BD [ por Correo ]
-        User user = userService.obtenerPorCorreo(email).get();
+        User user = userService.getByEmail(email).get();
 
         // Convierte el Usuario en el "Principal" con sus privilegios
         return UserRolesPrincipal.build(user);

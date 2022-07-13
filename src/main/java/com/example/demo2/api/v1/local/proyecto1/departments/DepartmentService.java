@@ -13,27 +13,27 @@ public class DepartmentService {
     @Autowired
     DepartmentRepository departmentRepository;
     
-    public ArrayList<Department> obtenerTodos(){
+    public ArrayList<Department> getAll(){
         return (ArrayList<Department>) departmentRepository.findAll();
     }
-
-    public Department guardar(Department depto){
-        return departmentRepository.save(depto);
-    }
-
-    public Optional<Department> obtenerPorId(Integer id){
+    
+    public Optional<Department> getById(Integer id){
         return departmentRepository.findById(id);
     }
-
-    public ArrayList<Department> obtenerPorNombre(String name) {
+    
+    public ArrayList<Department> getByName(String name) {
         return departmentRepository.findByName(name);
     }
     
-    public ArrayList<Department> obtenerPorCodigo(String code) {
-        return departmentRepository.findByName(code);
+    public ArrayList<Department> getByCode(String code) {
+        return departmentRepository.findByCode(code);
     }
 
-    public boolean eliminar(Integer id) {
+    public Department save(Department depto){
+        return departmentRepository.save(depto);
+    }
+
+    public boolean delete(Integer id) {
         try{
             departmentRepository.deleteById(id);
             return true;

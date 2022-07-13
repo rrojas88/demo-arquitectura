@@ -14,23 +14,23 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
     
-    public Optional<User> obtenerPorNombre( String name ){
+    public Optional<User> getByName( String name ){
         return userRepository.findByName(name);
     }
     
-    public Optional<User> obtenerPorCorreo( String email ){
+    public Optional<User> getByEmail( String email ){
         return userRepository.findByEmail(email);
     }
     
-    public boolean existePorNombre(String name ){
+    public boolean existsByName(String name ){
         return userRepository.existsByName(name);
     }
     
-    public boolean existePorCorreo(String email ){
+    public boolean existsByEmail(String email ){
         return userRepository.existsByEmail(email);
     }
     
-    public void guardar( User user ){
+    public void save( User user ){
         userRepository.save(user);
     }
     

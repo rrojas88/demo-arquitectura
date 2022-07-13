@@ -12,5 +12,7 @@ public interface DepartmentRepository extends CrudRepository<Department, Integer
     public abstract ArrayList<Department> findByName(String name);
     
     public abstract ArrayList<Department> findByCode(String code);
+    public abstract ArrayList<Department> findById(String id);
+
 
 }

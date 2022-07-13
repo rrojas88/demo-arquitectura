@@ -13,23 +13,23 @@ public class CityService {
     @Autowired
     CityRepository cityRepository;
     
-    public ArrayList<City> obtenerTodos(){
+    public ArrayList<City> getAll(){
         return (ArrayList<City>) cityRepository.findAll();
     }
-
-    public City guardar(City city){
-        return cityRepository.save(city);
-    }
-
-    public Optional<City> obtenerPorId(Integer id){
+    
+    public Optional<City> getById(Integer id){
         return cityRepository.findById(id);
     }
 
-    public ArrayList<City> obtenerPorNombre(String name) {
+    public ArrayList<City> getByName(String name) {
         return cityRepository.findByName(name);
     }
 
-    public boolean eliminar(Integer id) {
+    public City save(City city){
+        return cityRepository.save(city);
+    }
+
+    public boolean delete(Integer id) {
         try{
             cityRepository.deleteById(id);
             return true;

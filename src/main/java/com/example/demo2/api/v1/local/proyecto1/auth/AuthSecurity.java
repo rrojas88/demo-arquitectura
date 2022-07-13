@@ -49,7 +49,7 @@ public class AuthSecurity extends WebSecurityConfigurerAdapter {
         http.cors()
             .and().csrf().disable() // Inhabilitar cookies
             .authorizeRequests()
-            .antMatchers("/auth/**").permitAll() // Permitido a TODO mundo (login)
+            .antMatchers("/v1/local/auth/**").permitAll() // Permitido a TODO mundo (login)
             .anyRequest().authenticated() // Para el resto debe estar autenticado
             .and() // Verificar si viene Token
             .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)

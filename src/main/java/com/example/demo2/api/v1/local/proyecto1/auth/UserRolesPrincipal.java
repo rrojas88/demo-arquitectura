@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 // Entidad: UsuarioPrincipal(Video)
 public class UserRolesPrincipal implements UserDetails {
     
+    private Integer id;
     private String name;
     private String email;
     private String password;
@@ -21,10 +22,12 @@ public class UserRolesPrincipal implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserRolesPrincipal(
-            String name, String email, 
-            String password, Byte active, 
-            Collection<? extends GrantedAuthority> authorities 
+        Integer id,
+        String name, String email, 
+        String password, Byte active, 
+        Collection<? extends GrantedAuthority> authorities 
     ) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -39,8 +42,10 @@ public class UserRolesPrincipal implements UserDetails {
             .map( rol -> new SimpleGrantedAuthority (rol.getName().name() ))
             .collect( Collectors.toList() );
         
-        return new UserRolesPrincipal( user.getName(), user.getEmail(),
-            user.getPassword(), user.getActive(), authorities
+        return new UserRolesPrincipal( 
+            user.getId(), user.getName(), 
+            user.getEmail(), user.getPassword(), 
+            user.getActive(), authorities
         );
     }
 
@@ -80,6 +85,10 @@ public class UserRolesPrincipal implements UserDetails {
     }
     
     // Nuevos
+    public Integer getId() {
+        return id;
+    }
+    
     public String getEmail() {
         return email;
     }
