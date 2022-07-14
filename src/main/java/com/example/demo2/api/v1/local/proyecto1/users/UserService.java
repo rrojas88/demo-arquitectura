@@ -30,8 +30,8 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
     
-    public void save( User user ){
-        userRepository.save(user);
+    public Object save( User user ){
+        return userRepository.save(user);
     }
     
 }

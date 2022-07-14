@@ -1,28 +1,18 @@
 
 package com.example.demo2.api.v1.local.proyecto1.auth;
 
-import com.example.demo2.api.v1.local.Utils.MessageLocal;
-import com.example.demo2.api.v1.local.proyecto1.auth.jwt.JwtProvider;
-import com.example.demo2.api.v1.local.proyecto1.auth.login.ResponseLoginDto;
+import com.example.demo2.api.v1.local.Utils.ResponseLocal;
+import com.example.demo2.api.v1.local.Utils.logs.LogService;
 import com.example.demo2.api.v1.local.proyecto1.auth.login.LoginDto;
-import com.example.demo2.api.v1.local.proyecto1.roles.Rol;
-import com.example.demo2.api.v1.local.proyecto1.roles.RolName;
-import com.example.demo2.api.v1.local.proyecto1.roles.RolService;
-import com.example.demo2.api.v1.local.proyecto1.users.User;
 import com.example.demo2.api.v1.local.proyecto1.users.UserDto;
-import com.example.demo2.api.v1.local.proyecto1.users.UserService;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,95 +27,102 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     
     @Autowired
-    PasswordEncoder passwordEncoder;
+    LogService logService;
     
     @Autowired
-    AuthenticationManager authenticationManager;
+    AuthService authService;
     
-    @Autowired
-    UserService userService;
     
-    @Autowired
-    RolService rolService;
-    
-    @Autowired
-    JwtProvider jwtProvider;
+    private String myClassName = AuthController.class.getName();
     
     @PostMapping("/register")
-    public ResponseEntity<?> nuevo (
+    public ResponseEntity<?> register (
         @Valid @RequestBody UserDto userDto, 
-        BindingResult bindingResult
-    ){
-        String message = "";
+        BindingResult bindingResult,
+        HttpServletRequest req
+    )
+    {
+        ResponseLocal response = new ResponseLocal( logService );
         if( bindingResult.hasErrors() ){
-            message = "Campos erroneos o email inválido";
-        }
-        if( userService.existsByEmail( userDto.getEmail() ) && message.equals("") ){
-            message = "Este correo ya está registrado";
-        }
-        if( ! message.equals("") ){
-            return new ResponseEntity( new MessageLocal(message), HttpStatus.BAD_REQUEST );
+            response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
+                bindingResult.getAllErrors(),
+                this.myClassName, 
+                userDto.toString(), 
+                req
+            );
+            return new ResponseEntity<Object>( response, HttpStatus.BAD_REQUEST );
         }
         
-        User user = new User(
-            userDto.getName(), userDto.getEmail(), 
-            passwordEncoder.encode( userDto.getPassword() )
-        );
-        
-        Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByName(RolName.ROLE_LECTURA).get());
-        if( userDto.getRoles().contains("Usuario") || userDto.getRoles().contains("Usuario normal") ){
-            roles.add( rolService.getByName(RolName.ROLE_USUARIO).get() );
+        try {
+            Object resRegister = this.authService.register(userDto);
+            HttpStatus httpStatus = response.validateService( resRegister, 
+                "Usuario registrado correctamente",
+                this.myClassName, 
+                userDto.toString(), 
+                req
+            );
+            return new ResponseEntity( response, httpStatus );
         }
-        if( userDto.getRoles().contains("Admin") || userDto.getRoles().contains("Administrador") ){
-            roles.add( rolService.getByName(RolName.ROLE_ADMIN).get() );
+        catch (Exception e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo registrar el usuario", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                userDto.toString(), 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         }
-        user.setRoles(roles);
-        
-        userService.save(user);
-        message = "Usuario guardado";
-        
-        return new ResponseEntity( new MessageLocal(message), HttpStatus.CREATED );
     }
     
+    
     @PostMapping("/login")
-    public ResponseEntity<ResponseLoginDto> login (@Valid @RequestBody LoginDto login, BindingResult bindingResult )
+    public ResponseEntity<?> login (
+        @Valid @RequestBody LoginDto login, 
+        BindingResult bindingResult,
+        HttpServletRequest req
+    )
     {
-        String message = "";
+        ResponseLocal response = new ResponseLocal( logService );
         if( bindingResult.hasErrors() ){
-            message = "Campos erroneos o email inválido";
-        }
-        if( ! message.equals("") ){
-            return new ResponseEntity( new MessageLocal(message), HttpStatus.BAD_REQUEST );
+            response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
+                bindingResult.getAllErrors(),
+                this.myClassName, 
+                login.toString(), 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         }
         
-        Authentication auth = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken( 
-                login.getEmail(), login.getPassword() 
-            )
-        );
-        // Se Autentica el usuario
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        // Genera el Token a partir de la Autenticacion
-        String jwt = jwtProvider.generateToken(auth);
-        // 
-        UserRolesPrincipal authUserRoles = (UserRolesPrincipal) auth.getPrincipal();
-        // 
-        ResponseLoginDto responseLoginDto = new ResponseLoginDto(
-            jwt, //
-            authUserRoles.getEmail(),
-            authUserRoles.getUsername(), 
-            authUserRoles.getAuthorities()
-        );
-        
-        return new ResponseEntity(responseLoginDto, HttpStatus.OK );
+        try {
+            Object resRegister = this.authService.login(login);
+            HttpStatus httpStatus = response.validateService( resRegister, 
+                "Usuario ok",
+                this.myClassName, 
+                login.toString(), 
+                req
+            );
+            return new ResponseEntity( response, httpStatus );
+        }
+        catch (Exception e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo comprobar el usuario", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                login.toString(), 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
     }
     
     @GetMapping("/test")
-    public ResponseEntity<ResponseLoginDto> test ( )
+    public ResponseEntity<?> test ( )
     {
         String message = "Get del Auth/test = OK ";
-        return new ResponseEntity( new MessageLocal(message), HttpStatus.OK );
+        return new ResponseEntity( message, HttpStatus.OK );
     }
     
 }

@@ -162,7 +162,7 @@ public class DepartmentController {
             Object row = this.departmentService.save(depto);
             HttpStatus httpStatus = response.validateService( row, 
                 "Departamento guardado correctamente",
-                DepartmentController.class.getName(), 
+                this.myClassName, 
                 deptoDto.toString(), 
                 req
             );
@@ -217,7 +217,7 @@ public class DepartmentController {
         } */
         catch ( DataAccessException e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo eliminar el Departamento", 
+                "No se pudo eliminar el Departamento.", 
                 e.getMessage(), 
                 new ArrayList<ObjectError>(),
                 this.myClassName, 

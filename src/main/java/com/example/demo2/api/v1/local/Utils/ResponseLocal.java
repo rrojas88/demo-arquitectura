@@ -60,7 +60,7 @@ public class ResponseLocal {
                 payload, 
                 req
             );
-            System.out.println( "===>  Error validateService:\n" + message );
+            System.out.println( "===>  Error validateService:\n" + message_ );
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
         else
@@ -91,9 +91,13 @@ public class ResponseLocal {
         //this.data = data;
         
         String description = "";
+        String user_id = "";
+        String user_login = "";
         UserRolesPrincipal userData = this.getUserData();
-        String user_id = userData.getId().toString();
-        String user_login = userData.getEmail();
+        if( userData != null ){
+            user_id = userData.getId().toString();
+            user_login = userData.getEmail();
+        }  
         
         String url = this.getUrl(req);
         String dateTimeNow = this.getDateTimeNow();
@@ -138,9 +142,13 @@ public class ResponseLocal {
         }
         if( description == null || description.equals("") ) description = this.message;
         
+        String user_id = "";
+        String user_login = "";
         UserRolesPrincipal userData = this.getUserData();
-        String user_id = userData.getId().toString();
-        String user_login = userData.getEmail();
+        if( userData != null ){
+            user_id = userData.getId().toString();
+            user_login = userData.getEmail();
+        }      
         
         String url = this.getUrl(req);
         String dateTimeNow = this.getDateTimeNow();
@@ -177,17 +185,22 @@ public class ResponseLocal {
        return ip;
    } 
     
+    
     private String getDateTimeNow(){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         String dateTimeNow = DateTime.now(DateTimeZone.forID("America/Bogota")).toString(formatter);
         return dateTimeNow;
     }
     
+    
     private UserRolesPrincipal getUserData(  ){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if( principal.equals("anonymousUser") ) return null;
+        
         UserRolesPrincipal userDetails = ( UserRolesPrincipal )principal;
         return userDetails;
     }
+    
     
     private String getUrl(HttpServletRequest req){
         String queryString = ( req.getQueryString() != null )? "?" + req.getQueryString() : "";
