@@ -21,7 +21,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -110,13 +109,10 @@ public class AuthController {
         // Genera el Token a partir de la Autenticacion
         String jwt = jwtProvider.generateToken(auth);
         // 
-        //UserDetails userDetails = (UserDetails) auth.getPrincipal();
         UserRolesPrincipal authUserRoles = (UserRolesPrincipal) auth.getPrincipal();
         // 
         ResponseLoginDto responseLoginDto = new ResponseLoginDto(
             jwt, //
-            //userDetails.getUsername(), //
-            //userDetails.getAuthorities() //
             authUserRoles.getEmail(),
             authUserRoles.getUsername(), 
             authUserRoles.getAuthorities()

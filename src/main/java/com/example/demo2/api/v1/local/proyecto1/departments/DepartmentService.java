@@ -1,7 +1,8 @@
 
 package com.example.demo2.api.v1.local.proyecto1.departments;
 
-import java.util.ArrayList;
+import com.example.demo2.api.v1.local.Utils.ErrorService;
+import com.example.demo2.api.v1.local.Utils.logs.LogService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,33 +13,98 @@ public class DepartmentService {
     
     @Autowired
     DepartmentRepository departmentRepository;
+    @Autowired
+    LogService logService;
     
-    public ArrayList<Department> getAll(){
-        return (ArrayList<Department>) departmentRepository.findAll();
+    private String myClassName = DepartmentService.class.getName();
+    
+
+    public Object getAll() {
+        try {
+            return departmentRepository.findAll();
+        }
+        catch (Exception e) {
+            ErrorService errService = new ErrorService(
+                "No se listaron los Departamentos", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
+        }
     }
     
-    public Optional<Department> getById(Integer id){
-        return departmentRepository.findById(id);
+    public Object getById(Integer id){
+        try {
+            return departmentRepository.findById(id);
+        }
+        catch (Exception e) {
+            ErrorService errService = new ErrorService(
+                "No se obtuvo el Departamento", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
+        }
     }
     
-    public ArrayList<Department> getByName(String name) {
-        return departmentRepository.findByName(name);
+    public Object getByName(String name){    
+        try {
+            return departmentRepository.findByName(name);
+        }
+        catch (Exception e) {
+            ErrorService errService = new ErrorService(
+                "No se obtuvo el Departamento", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
+        }
     }
     
-    public ArrayList<Department> getByCode(String code) {
-        return departmentRepository.findByCode(code);
+    public Object getByCode(String code) {
+        try {
+            return departmentRepository.findByCode(code);
+        }
+        catch (Exception e) {
+            ErrorService errService = new ErrorService(
+                "No se obtuvo el Departamento", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
+        }
     }
 
-    public Department save(Department depto){
-        return departmentRepository.save(depto);
+    public Object save(Department depto){
+        try {
+            return departmentRepository.save(depto);
+        }
+        catch (Exception e) {
+            ErrorService errService = new ErrorService(
+                "No se pudo guardar el Departamento", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
+        }
     }
 
-    public boolean delete(Integer id) {
-        try{
-            departmentRepository.deleteById(id);
-            return true;
-        }catch(Exception err){
+    public Object delete(Integer id){
+        try {
+            Optional<Department> row = departmentRepository.findById(id);
+            if( ! row.isEmpty() ){
+                departmentRepository.deleteById(id);
+                return true;
+            }
             return false;
+        }
+        catch(Exception e){
+            ErrorService errService = new ErrorService(
+                "No se eliminó el Departamento", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
         }
     }
 }

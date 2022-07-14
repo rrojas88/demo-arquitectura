@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.ObjectError;
 
@@ -18,7 +19,6 @@ import org.springframework.validation.ObjectError;
 public class ResponseLocal {
     
     public Integer code;
-    //public ArrayList data;
     public Object data;
     public String message;
     
@@ -29,29 +29,67 @@ public class ResponseLocal {
         this.logService = logService;
     }
     
-    
+    /*
     public ResponseLocal( Integer code, String message, 
         ArrayList data, HttpServletRequest req
     ){
         if( code == null ) this.code = 200;
         else this.code = code;
-    }
+    } */
     
-    
-    public void setSuccess(
+    public HttpStatus validateService(
         Object data,
         String message,
         String class_path,
         String payload,
         HttpServletRequest req
     ){
-        this.code = 200;
-        this.message = message;
-        //System.out.println( "\n--- Tipo-Dato-1:" + data.getClass().getSimpleName() );
-        //System.out.println( "\n--- Tipo-Dato-2:" + ((Object)data).getClass().getSimpleName() );
-        //String typeData = data.getClass().getSimpleName();
-        this.data = data;
-            
+        System.out.println( "\n============ validateService ================" );
+        String typeData = (data != null) ? data.getClass().getSimpleName() : "";
+        //System.out.println( "===> typeData: " + typeData );
+        if( typeData.equals("ErrorService") )
+        {
+            String message_ = (( ErrorService )data).getMessage();
+            String description_ = (( ErrorService )data).getDescription();
+            String class_path_ = (( ErrorService )data).getClass_path();
+            this.setError( 500, 
+                message_, 
+                description_, 
+                new ArrayList<ObjectError>(), 
+                class_path_, 
+                payload, 
+                req
+            );
+            System.out.println( "===>  Error validateService:\n" + message );
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        else
+        {
+            this.code = 200;
+            this.message = message;
+            this.data = data;
+            this.setSuccess( 
+                class_path, 
+                payload, 
+                req
+            );
+            System.out.println( "===> OK validateService:\n" + message );
+            return HttpStatus.OK;
+        }
+    }
+    
+    
+    public void setSuccess(
+        //Object data,
+        //String message,
+        String class_path,
+        String payload,
+        HttpServletRequest req
+    ){
+        //this.code = 200;
+        //this.message = message;
+        //this.data = data;
+        
         String description = "";
         UserRolesPrincipal userData = this.getUserData();
         String user_id = userData.getId().toString();
@@ -82,6 +120,7 @@ public class ResponseLocal {
         String message, 
         String description, 
         List<ObjectError> listErrors,
+        //List<Object> listErrors,
         String class_path,
         String payload,
         HttpServletRequest req
@@ -97,7 +136,7 @@ public class ResponseLocal {
         else{
             this.message = message;
         }
-        if( description == null ) description = message;
+        if( description == null || description.equals("") ) description = this.message;
         
         UserRolesPrincipal userData = this.getUserData();
         String user_id = userData.getId().toString();
@@ -146,11 +185,6 @@ public class ResponseLocal {
     
     private UserRolesPrincipal getUserData(  ){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        /*
-        UserRolesPrincipal userDetails = null;
-        if( principal instanceof UserRolesPrincipal ){
-            userDetails = ( UserRolesPrincipal )principal;
-        } */
         UserRolesPrincipal userDetails = ( UserRolesPrincipal )principal;
         return userDetails;
     }

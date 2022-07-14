@@ -5,9 +5,9 @@ import javax.validation.constraints.NotBlank;
 
 public class LoginDto {
     
-    @NotBlank
+    @NotBlank(message = "El correo es requerido.")
     private String email;
-    @NotBlank
+    @NotBlank(message = "La contraseña es requerida.")
     private String password;
 
     public String getEmail() {

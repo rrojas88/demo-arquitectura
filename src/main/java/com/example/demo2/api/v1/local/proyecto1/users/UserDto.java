@@ -7,12 +7,13 @@ import java.util.Set;
 
 public class UserDto {
     
-    @NotBlank // No NULO /No cadena vacia /No espacio en blanco
+    // No NULO /No cadena vacia /No espacio en blanco
+    @NotBlank(message = "El nombre es requerido.")
     private String name;
-    @NotBlank
-    @Email
+    @NotBlank(message = "El correo es requerido.")
+    @Email(message = "Debe ingresar un correo válido.")
     private String email;
-    @NotBlank
+    @NotBlank(message = "La contraseña es requerida.")
     private String password;
     private Byte active = 1;
     // Cadenas por ser JSONs
