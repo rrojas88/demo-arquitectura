@@ -1,19 +1,18 @@
 
+
 package com.example.demo2.api.v1.local.proyecto1.cities;
 
-import javax.persistence.*;
+import javax.validation.constraints.*;
 
-@Entity
-@Table(name = "cities")
-public class City {
+
+public class CityDto {
     
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( unique = true, nullable = false )
     private Integer id;
-    
+    @NotBlank(message = "El identificador del departamento es requerido.")
     private Integer department_id;
+    @NotBlank(message = "El código de la ciudad es requerido.")
     private String code;
+    @NotEmpty(message = "El nombre de la ciudad es requerido.")
     private String name;
     private Byte active;
 
@@ -32,7 +31,7 @@ public class City {
     public void setDepartment_id(Integer department_id) {
         this.department_id = department_id;
     }
-    
+
     public String getCode() {
         return code;
     }
@@ -59,6 +58,6 @@ public class City {
 
     @Override
     public String toString() {
-        return "City{" + "id=" + id + ", department_id=" + department_id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
+        return "CityDto{" + "id=" + id + ", department_id=" + department_id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
     }
 }

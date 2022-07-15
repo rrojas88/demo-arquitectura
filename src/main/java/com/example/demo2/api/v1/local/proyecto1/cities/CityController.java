@@ -4,9 +4,14 @@ package com.example.demo2.api.v1.local.proyecto1.cities;
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
 import com.example.demo2.api.v1.local.Utils.logs.LogService;
 import java.util.ArrayList;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,62 +31,185 @@ public class CityController {
     @Autowired
     LogService logService;
     
+    private String myClassName = CityController.class.getName();
+    
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
     @GetMapping
-    public ResponseLocal getAll(){
+    public ResponseEntity<?> getAll( HttpServletRequest req ){
         ResponseLocal response = new ResponseLocal( logService );
         try {
-            ArrayList<City> data = cityService.getAll();
-            response.data = data;
-            return response;
+            Object rows = cityService.getAll();
+            HttpStatus httpStatus = response.validateService( rows, 
+                "Ciudades listadas",
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<Object>( response, httpStatus );
         }
         catch ( Exception e ){
-            response.code = 500;
-            response.message = e.getMessage();
-            return response;
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo listar las Ciudades", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         }
     }
+    
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping( path = "/{id}")
-    public Optional<City> getById(@PathVariable("id") Integer id) {
-        return this.cityService.getById(id);
+    public ResponseEntity<?> getById(
+        @PathVariable("id") Integer id,
+        HttpServletRequest req
+    )
+    {
+        ResponseLocal response = new ResponseLocal( logService );
+        try {
+            Object row = this.cityService.getById(id);
+            HttpStatus httpStatus = response.validateService( row, 
+                "Ciudad obtenida",
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, httpStatus );
+        }
+        catch (Exception e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo obtener la Ciudad", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
     }
 
+    
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/query")
-    public ArrayList<City> getByName(@RequestParam("name") String name){
-        return this.cityService.getByName(name);
+    public ResponseEntity<?> getByName(
+        @RequestParam("name") String name,
+        HttpServletRequest req
+    )
+    {
+        ResponseLocal response = new ResponseLocal( logService );
+        try {
+            Object row = this.cityService.getByName(name);
+            HttpStatus httpStatus = response.validateService( row, 
+                "Ciudad obtenida",
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<Object>( response, HttpStatus.OK );
+        }
+        catch (Exception e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo obtener la Ciudad", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
     }
+    
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
-    public ResponseLocal save(@RequestBody City city ){
+    public ResponseEntity<?> save(
+        @RequestBody CityDto cityDto,
+        BindingResult bindingResult, 
+        HttpServletRequest req
+    ){
         ResponseLocal response = new ResponseLocal( logService );
-        ArrayList data = new ArrayList();
-        try {
-            City newCity = this.cityService.save(city);
-
-            data.add( newCity );
-            response.data = data;
-            return response;
+        if( bindingResult.hasErrors() ){
+            response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
+                bindingResult.getAllErrors(),
+                this.myClassName, 
+                cityDto.toString(), 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         }
-        catch ( Exception e ){ //data.add( city ); response.data = data; 
-            response.code = 500;
-            response.message = e.getMessage();
-            return response;
+        try {
+            Object row = this.cityService.save(cityDto);
+            HttpStatus httpStatus = response.validateService( row, 
+                "Ciudad guardada correctamente",
+                this.myClassName, 
+                cityDto.toString(), 
+                req
+            );
+            return new ResponseEntity<Object>( response, httpStatus );
+        }
+        catch ( Exception e ){
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo guardar la Ciudad", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                cityDto.toString(), 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         }
     }
 
+    
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping( path = "/{id}")
-    public String delete(@PathVariable("id") Integer id){
-        boolean ok = this.cityService.delete(id);
-        if( ok ){
-            return "Se eliminó el registro con ID: " + id;
-        }else{
-            return "No pudo eliminar el registro con ID: " + id;
+    public ResponseEntity<?> delete(
+        @PathVariable("id") Integer id,
+        HttpServletRequest req
+    )
+    {
+        ResponseLocal response = new ResponseLocal( logService );
+        try {
+            Object ok = this.cityService.delete(id);
+            String message = "Se eliminó el registro con ID: " + id;
+            if( ! (boolean)ok )
+                message = "No se eliminó el registro con ID: " + id;
+            
+            HttpStatus httpStatus = response.validateService( null, 
+                message,
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, httpStatus );
         }
+        catch ( DataAccessException e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo eliminar la Ciudad.", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
+        catch (Exception e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo eliminar la Ciudad", 
+                e.getMessage(), 
+                new ArrayList<ObjectError>(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        } 
     }
     
 }

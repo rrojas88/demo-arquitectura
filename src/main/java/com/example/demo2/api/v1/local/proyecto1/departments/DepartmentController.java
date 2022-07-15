@@ -81,7 +81,7 @@ public class DepartmentController {
                 null, 
                 req
             );
-            return new ResponseEntity<Object>( response, httpStatus );
+            return new ResponseEntity<>( response, httpStatus );
         }
         catch (Exception e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
@@ -131,7 +131,8 @@ public class DepartmentController {
     
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO')")
     @PostMapping()
-    public ResponseEntity<?> save( @Valid @RequestBody DepartmentDto deptoDto,
+    public ResponseEntity<?> save( 
+        @Valid @RequestBody DepartmentDto deptoDto,
         BindingResult bindingResult, 
         HttpServletRequest req
     )
@@ -166,7 +167,7 @@ public class DepartmentController {
                 deptoDto.toString(), 
                 req
             );
-            return new ResponseEntity<Object>( response, httpStatus );
+            return new ResponseEntity<>( response, httpStatus );
         }
         catch (Exception e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
@@ -202,7 +203,7 @@ public class DepartmentController {
                 null, 
                 req
             );
-            return new ResponseEntity<Object>( response, httpStatus );
+            return new ResponseEntity<>( response, httpStatus );
         } /*
         catch ( SQLException e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 

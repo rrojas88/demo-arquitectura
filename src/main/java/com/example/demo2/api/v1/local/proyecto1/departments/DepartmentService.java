@@ -2,7 +2,6 @@
 package com.example.demo2.api.v1.local.proyecto1.departments;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.Utils.logs.LogService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,6 @@ public class DepartmentService {
     
     @Autowired
     DepartmentRepository departmentRepository;
-    @Autowired
-    LogService logService;
     
     private String myClassName = DepartmentService.class.getName();
     
