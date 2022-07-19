@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 public class CityDto {
     
     private Integer id;
-    @NotBlank(message = "El identificador del departamento es requerido.")
+    @NotNull(message = "El identificador del departamento es requerido.")
     private Integer department_id;
     @NotBlank(message = "El código de la ciudad es requerido.")
     private String code;

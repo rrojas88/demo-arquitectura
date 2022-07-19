@@ -2,6 +2,8 @@
 package com.example.demo2.api.v1.local.proyecto1.departments;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
+import com.example.demo2.api.v1.local.Utils.UtilsService;
+import com.example.demo2.api.v1.local.proyecto1.cities.CityService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ public class DepartmentService {
     
     @Autowired
     DepartmentRepository departmentRepository;
+    @Autowired
+    CityService cityService;
     
     private String myClassName = DepartmentService.class.getName();
     
@@ -86,14 +90,30 @@ public class DepartmentService {
         }
     }
 
+    
     public Object delete(Integer id){
         try {
+            Object cities = cityService.getByDepartment_id(id);
+            System.out.println( "\n ---> Tiene Ciudades: " );System.out.println(cities);
+            if( UtilsService.isErrorService(cities) ){
+                return cities;
+            }
+            if( cities != null ){
+                System.out.println( "---> Entra: Tiene Ciudades " );
+                    ErrorService errService = new ErrorService(
+                    "No se puede eliminar el departamento porque tiene ciudades asociadas", 
+                    "", 
+                    this.myClassName
+                );
+                return errService;
+            }System.out.println( "---> NO Entra: NO Tiene Ciudades " );
+            
             Optional<Department> row = departmentRepository.findById(id);
             if( ! row.isEmpty() ){
                 departmentRepository.deleteById(id);
-                return true;
+                return "Se eliminó el registro con ID: " + id;
             }
-            return false;
+            return "No se eliminó el registro con ID: " + id;
         }
         catch(Exception e){
             ErrorService errService = new ErrorService(

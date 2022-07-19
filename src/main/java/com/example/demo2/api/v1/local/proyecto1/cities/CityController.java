@@ -5,6 +5,7 @@ import com.example.demo2.api.v1.local.Utils.ResponseLocal;
 import com.example.demo2.api.v1.local.Utils.logs.LogService;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -128,7 +129,7 @@ public class CityController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
     public ResponseEntity<?> save(
-        @RequestBody CityDto cityDto,
+        @Valid @RequestBody CityDto cityDto,
         BindingResult bindingResult, 
         HttpServletRequest req
     ){

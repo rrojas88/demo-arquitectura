@@ -2,13 +2,9 @@
 package com.example.demo2.api.v1.local.proyecto1.cities;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 
 @Service
@@ -54,6 +50,20 @@ public class CityService {
         catch (Exception e) {
             ErrorService errService = new ErrorService(
                 "No se obtuvo la Ciudad", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
+        }
+    }
+    
+    public Object getByDepartment_id(Integer department_id){
+        try {
+            return cityRepository.findAllByDepartmentId(department_id);
+        }
+        catch (Exception e) {
+            ErrorService errService = new ErrorService(
+                "No se obtuvieron ciudades", 
                 e.getMessage(), 
                 this.myClassName
             );

@@ -3,7 +3,6 @@ package com.example.demo2.api.v1.local.proyecto1.departments;
 
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
 import com.example.demo2.api.v1.local.Utils.logs.LogService;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -192,13 +191,9 @@ public class DepartmentController {
     {
         ResponseLocal response = new ResponseLocal( logService );
         try {
-            Object ok = this.departmentService.delete(id);
-            String message = "Se eliminó el registro con ID: " + id;
-            if( ! (boolean)ok )
-                message = "No se eliminó el registro con ID: " + id;
-            
-            HttpStatus httpStatus = response.validateService( null, 
-                message,
+            Object resDel = this.departmentService.delete(id);
+            HttpStatus httpStatus = response.validateService( resDel, 
+                "Se eliminó el registro con ID: " + id,
                 this.myClassName, 
                 null, 
                 req

@@ -45,9 +45,7 @@ public class ResponseLocal {
         HttpServletRequest req
     ){
         System.out.println( "\n============ validateService ================" );
-        String typeData = (data != null) ? data.getClass().getSimpleName() : "";
-        //System.out.println( "===> typeData: " + typeData );
-        if( typeData.equals("ErrorService") )
+        if( UtilsService.isErrorService(data) )
         {
             String message_ = (( ErrorService )data).getMessage();
             String description_ = (( ErrorService )data).getDescription();
@@ -60,7 +58,7 @@ public class ResponseLocal {
                 payload, 
                 req
             );
-            System.out.println( "===>  Error validateService:\n" + message_ );
+            System.out.println( "===>  Error validateService:\n" + description_ );
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
         else
@@ -114,7 +112,7 @@ public class ResponseLocal {
         log.setRow_date_time(dateTimeNow);
         log.setIp(ip);
         log.setPayload(payload);
-        System.out.println( "\n--- LOG:\n" + log.toString() );
+        //System.out.println( "\n--- LOG:\n" + log.toString() );
         
         Log row = this.logService.save(log);
     }
