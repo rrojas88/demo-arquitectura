@@ -3,7 +3,9 @@ package com.example.demo2.api.v1.local.proyecto1.departments;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
+import com.example.demo2.api.v1.local.proyecto1.cities.City;
 import com.example.demo2.api.v1.local.proyecto1.cities.CityService;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,7 +100,7 @@ public class DepartmentService {
             if( UtilsService.isErrorService(cities) ){
                 return cities;
             }
-            if( cities != null ){
+            if( cities != null && ((Optional)cities).isEmpty() ){
                 System.out.println( "---> Entra: Tiene Ciudades " );
                     ErrorService errService = new ErrorService(
                     "No se puede eliminar el departamento porque tiene ciudades asociadas", 
