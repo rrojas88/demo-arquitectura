@@ -17,12 +17,13 @@ public class Log {
     private String message;
     private String description;
     private String class_path;
-    private String url;
     private String user_id;
     private String user_login;
-    @Column( nullable = true )
+    @Column( nullable = false )
     private String row_date_time;
     private String ip;
+    private String url;
+    private String method;
     private String payload;
     
     public Log() {
@@ -68,14 +69,6 @@ public class Log {
         this.class_path = class_path;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getUser_id() {
         return user_id;
     }
@@ -107,6 +100,22 @@ public class Log {
     public void setIp(String ip) {
         this.ip = ip;
     }
+    
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
     public String getPayload() {
         return payload;
@@ -118,7 +127,7 @@ public class Log {
 
     @Override
     public String toString() {
-        return "Log{" + "id=" + id + ", code=" + code + ", message=" + message + ", description=" + description + ", class_path=" + class_path + ", url=" + url + ", user_id=" + user_id + ", user_login=" + user_login + ", row_date_time=" + row_date_time + ", ip=" + ip + ", payload=" + payload + '}';
+        return "Log{" + "id=" + id + ", code=" + code + ", message=" + message + ", description=" + description + ", class_path=" + class_path + ", user_id=" + user_id + ", user_login=" + user_login + ", row_date_time=" + row_date_time + ", ip=" + ip + ", url=" + url + ", method=" + method + ", payload=" + payload + '}';
     }
     
 }

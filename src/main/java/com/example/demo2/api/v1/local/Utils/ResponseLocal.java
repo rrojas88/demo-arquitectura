@@ -106,11 +106,12 @@ public class ResponseLocal {
         log.setMessage(this.message);
         log.setDescription(description);
         log.setClass_path(class_path);
-        log.setUrl(url);
         log.setUser_id(user_id);
         log.setUser_login(user_login);
         log.setRow_date_time(dateTimeNow);
         log.setIp(ip);
+        log.setUrl(url);
+        log.setMethod(req.getMethod());
         log.setPayload(payload);
         //System.out.println( "\n--- LOG:\n" + log.toString() );
         
@@ -157,11 +158,12 @@ public class ResponseLocal {
         log.setMessage(this.message);
         log.setDescription(description);
         log.setClass_path(class_path);
-        log.setUrl(url);
         log.setUser_id(user_id);
         log.setUser_login(user_login);
         log.setRow_date_time(dateTimeNow);
         log.setIp(ip);
+        log.setUrl(url);
+        log.setMethod(req.getMethod());
         log.setPayload(payload);
         System.out.println( "\n--- LOG:\n" + log.toString() );
         
@@ -170,7 +172,6 @@ public class ResponseLocal {
     
     
     public String getIpAddr(HttpServletRequest req ) {
-        String mt = req.getMethod(); System.out.println( "- - - Metodo: " + mt );
         String ip = req.getHeader("x-forwarded-for");
         if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = req.getHeader("Proxy-Client-IP");
