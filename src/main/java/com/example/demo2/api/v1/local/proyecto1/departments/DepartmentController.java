@@ -2,6 +2,7 @@
 package com.example.demo2.api.v1.local.proyecto1.departments;
 
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
+import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.Utils.logs.LogService;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
@@ -184,9 +185,12 @@ public class DepartmentController {
     {
         ResponseLocal response = new ResponseLocal( logService );
         try {
+            String message = "";
             Object resDel = this.departmentService.delete(id);
+            if( ! UtilsService.isErrorService(resDel) ) message = (String) resDel;
+            
             HttpStatus httpStatus = response.validateService( resDel, 
-                "Se eliminó el registro con ID: " + id,
+                message,
                 this.myClassName, 
                 null, 
                 req

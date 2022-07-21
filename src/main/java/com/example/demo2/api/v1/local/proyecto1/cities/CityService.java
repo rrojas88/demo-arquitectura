@@ -103,9 +103,9 @@ public class CityService {
             Optional<City> row = cityRepository.findById(id);
             if( ! row.isEmpty() ){
                 cityRepository.deleteById(id);
-                return true;
+                return "Se eliminó el registro con ID: " + id;
             }
-            return false;
+            return "No se encontró el registro con ID: " + id;
         }
         catch(Exception e){
             ErrorService errService = new ErrorService(

@@ -96,26 +96,24 @@ public class DepartmentService {
     public Object delete(Integer id){
         try {
             Object cities = cityService.getByDepartment_id(id);
-            System.out.println( "\n ---> Tiene Ciudades: " );System.out.println(cities);
             if( UtilsService.isErrorService(cities) ){
                 return cities;
             }
-            if( cities != null && ((Optional)cities).isEmpty() ){
-                System.out.println( "---> Entra: Tiene Ciudades " );
-                    ErrorService errService = new ErrorService(
+            if( cities != null && ! ((ArrayList)cities).isEmpty() ){
+                ErrorService errService = new ErrorService(
                     "No se puede eliminar el departamento porque tiene ciudades asociadas", 
                     "", 
                     this.myClassName
                 );
                 return errService;
-            }System.out.println( "---> NO Entra: NO Tiene Ciudades " );
+            }
             
             Optional<Department> row = departmentRepository.findById(id);
             if( ! row.isEmpty() ){
                 departmentRepository.deleteById(id);
                 return "Se eliminó el registro con ID: " + id;
             }
-            return "No se eliminó el registro con ID: " + id;
+            return "No se encontró el registro con ID: " + id;
         }
         catch(Exception e){
             ErrorService errService = new ErrorService(
