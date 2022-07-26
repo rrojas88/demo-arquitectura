@@ -35,7 +35,7 @@ public class ResponseLocal {
     ){
         if( code == null ) this.code = 200;
         else this.code = code;
-    } */
+    } */   
     
     public HttpStatus validateService(
         Object data,
@@ -119,11 +119,12 @@ public class ResponseLocal {
     }
     
     
-    public void setError( Integer code, 
+    public void setError(
+        Integer code, 
         String message, 
         String description, 
         List<ObjectError> listErrors,
-        //List<Object> listErrors,
+        //Object listErrors,
         String class_path,
         String payload,
         HttpServletRequest req

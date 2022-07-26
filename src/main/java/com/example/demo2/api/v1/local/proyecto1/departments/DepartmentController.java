@@ -2,9 +2,9 @@
 package com.example.demo2.api.v1.local.proyecto1.departments;
 
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
+import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.Utils.logs.LogService;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -48,7 +47,7 @@ public class DepartmentController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo listar los Departamentos", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -80,7 +79,7 @@ public class DepartmentController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo obtener el Departamento", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -112,7 +111,7 @@ public class DepartmentController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo obtener el Departamento", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -166,7 +165,7 @@ public class DepartmentController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo guardar el Departamento", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 deptoDto.toString(), 
                 req
@@ -201,7 +200,7 @@ public class DepartmentController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo eliminar el Departamento", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -212,7 +211,7 @@ public class DepartmentController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo eliminar el Departamento.", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -223,7 +222,7 @@ public class DepartmentController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo eliminar el Departamento", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req

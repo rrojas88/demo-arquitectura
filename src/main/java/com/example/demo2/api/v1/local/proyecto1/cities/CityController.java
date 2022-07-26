@@ -2,9 +2,9 @@
 package com.example.demo2.api.v1.local.proyecto1.cities;
 
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
+import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.Utils.logs.LogService;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -46,7 +45,7 @@ public class CityController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo listar las Ciudades", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -78,7 +77,7 @@ public class CityController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo obtener la Ciudad", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -110,7 +109,7 @@ public class CityController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo obtener la Ciudad", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -151,7 +150,7 @@ public class CityController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo guardar la Ciudad", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 cityDto.toString(), 
                 req
@@ -189,7 +188,7 @@ public class CityController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo eliminar la Ciudad.", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req
@@ -200,7 +199,7 @@ public class CityController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo eliminar la Ciudad", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
                 req

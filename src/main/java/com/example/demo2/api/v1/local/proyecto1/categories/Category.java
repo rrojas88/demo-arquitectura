@@ -1,23 +1,23 @@
 
-package com.example.demo2.api.v1.local.proyecto1.cities;
+package com.example.demo2.api.v1.local.proyecto1.categories;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name = "cities")
-public class City {
+@Table(name = "categories")
+public class Category {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( unique = true, nullable = false )
     private Integer id;
     
-    private Integer department_id;
-    private String code;
     private String name;
+    private String image;
     private Byte active;
 
-    public City() {
+    public Category() {
         this.active = 1;
     }
 
@@ -29,28 +29,20 @@ public class City {
         this.id = id;
     }
 
-    public Integer getDepartment_id() {
-        return department_id;
-    }
-
-    public void setDepartment_id(Integer department_id) {
-        this.department_id = department_id;
-    }
-    
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Byte getActive() {
@@ -63,6 +55,6 @@ public class City {
 
     @Override
     public String toString() {
-        return "City{" + "id=" + id + ", department_id=" + department_id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
+        return "Category{" + "id=" + id + ", name=" + name + ", image=" + image + ", active=" + active + '}';
     }
 }

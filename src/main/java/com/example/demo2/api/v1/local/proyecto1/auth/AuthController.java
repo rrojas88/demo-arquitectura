@@ -2,17 +2,16 @@
 package com.example.demo2.api.v1.local.proyecto1.auth;
 
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
+import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.logs.LogService;
 import com.example.demo2.api.v1.local.proyecto1.auth.login.LoginDto;
 import com.example.demo2.api.v1.local.proyecto1.users.UserDto;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,7 +66,7 @@ public class AuthController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo registrar el usuario", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 userDto.toString(), 
                 req
@@ -109,7 +108,7 @@ public class AuthController {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
                 "No se pudo comprobar el usuario", 
                 e.getMessage(), 
-                new ArrayList<ObjectError>(),
+                UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 login.toString(), 
                 req
