@@ -5,9 +5,11 @@ import com.example.demo2.api.v1.local.Utils.ErrorService;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -18,7 +20,6 @@ public class CategoryService {
     
     private String myClassName = CategoryService.class.getName();
     
-    //private final Path root = Paths.get("uploads");
     private final Path rootPath = Paths.get("uploads");
     private final String root_dir = "";
     
@@ -39,7 +40,10 @@ public class CategoryService {
     
     public Object getById(Integer id){
         try {
-            return categoryRepository.findById(id);
+            Optional<Category> rowOptional = categoryRepository.findById(id);
+            if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
+                return new ErrorService("No hay registro", id.toString(), this.myClassName );
+            return rowOptional;
         }
         catch (Exception e) {
             ErrorService errService = new ErrorService(
@@ -54,6 +58,7 @@ public class CategoryService {
     public Object getByName(String name) {
         try {
             return categoryRepository.findByName(name);
+            //return categoryRepository.findByNameContains(name);
         }
         catch (Exception e) {
             ErrorService errService = new ErrorService(
@@ -65,7 +70,7 @@ public class CategoryService {
         }
     }
     
-    public Object save( CategoryDto categoryDto ){ 
+    public Object save( CategoryDto categoryDto ){
         String nameFile = categoryDto.getFile().getOriginalFilename();
         try {
             Files.copy(
@@ -104,11 +109,22 @@ public class CategoryService {
             return errService;
         }
     }
-/*
+
+    
     public Object delete(Integer id) {
         try {
-            Optional<City> row = categoryRepository.findById(id);
-            if( ! row.isEmpty() ){
+            Optional<Category> rowOptional = categoryRepository.findById(id);
+            if( rowOptional.isPresent() && ! rowOptional.isEmpty() ){
+                Category row = rowOptional.get();
+                
+                // Si existe eliminar el archivo
+                String[] partsImg = row.getImage().split("uploads/");
+                String fileName = partsImg[ 1 ];
+                Path file = rootPath.resolve(fileName);
+                Resource resource = new UrlResource( file.toUri() );
+                if( resource.exists() || resource.isReadable() )
+                    Files.delete(file);
+                
                 categoryRepository.deleteById(id);
                 return "Se eliminó el registro con ID: " + id;
             }
@@ -122,6 +138,6 @@ public class CategoryService {
             );
             return errService;
         }
-    } */
+    }
     
 }

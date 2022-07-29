@@ -16,7 +16,7 @@ public interface CityRepository extends CrudRepository<City, Integer>{
     //@Modifying
     @Transactional
     @Query(value="SELECT c.* FROM cities c WHERE c.department_id = :department_id ", nativeQuery=true )
-    //Optional<City> findAllByDepartmentId(@Param("department_id") Integer department_id);
+    //Optional<City> findAyevilisllByDepartmentId(@Param("department_id") Integer department_id);
     ArrayList<City> findAllByDepartmentId( Integer department_id );
     
 }

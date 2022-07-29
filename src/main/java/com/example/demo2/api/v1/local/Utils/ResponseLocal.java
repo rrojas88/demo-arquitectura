@@ -50,7 +50,8 @@ public class ResponseLocal {
             String message_ = (( ErrorService )data).getMessage();
             String description_ = (( ErrorService )data).getDescription();
             String class_path_ = (( ErrorService )data).getClass_path();
-            this.setError( 500, 
+            int code_ = (( ErrorService )data).getCode();
+            this.setError( code_, 
                 message_, 
                 description_, 
                 new ArrayList<ObjectError>(), 
@@ -59,7 +60,10 @@ public class ResponseLocal {
                 req
             );
             System.out.println( "===>  Error validateService:\n" + description_ );
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            
+            HttpStatus httpStatus = this.getHttpStatus( code_ );
+            
+            return httpStatus;
         }
         else
         {
@@ -208,4 +212,23 @@ public class ResponseLocal {
         return req.getRequestURL().toString() + queryString;
     }
     
+    
+    private HttpStatus getHttpStatus( int code ){
+        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        if( code == 400 ) httpStatus = HttpStatus.BAD_REQUEST;
+        else if( code == 401 ) httpStatus = HttpStatus.UNAUTHORIZED;
+        else if( code == 403 ) httpStatus = HttpStatus.FORBIDDEN;
+        else if( code == 404 ) httpStatus = HttpStatus.NOT_FOUND;
+        else if( code == 405 ) httpStatus = HttpStatus.METHOD_NOT_ALLOWED;
+        else if( code == 406 ) httpStatus = HttpStatus.NOT_ACCEPTABLE;
+        else if( code == 409 ) httpStatus = HttpStatus.CONFLICT;
+        else if( code == 408 ) httpStatus = HttpStatus.REQUEST_TIMEOUT;
+        
+        else if( code == 501 ) httpStatus = HttpStatus.NOT_IMPLEMENTED;
+        else if( code == 502 ) httpStatus = HttpStatus.BAD_GATEWAY;
+        else if( code == 503 ) httpStatus = HttpStatus.SERVICE_UNAVAILABLE;
+        else if( code == 504 ) httpStatus = HttpStatus.GATEWAY_TIMEOUT;
+
+        return httpStatus;
+    }
 }

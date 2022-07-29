@@ -8,10 +8,19 @@ public class ErrorService {
     public String message;
     public String description;
     public String class_path;
+    public int code;
 
     public ErrorService(String message, String description, String class_path) {
-        this.message = message;
-        this.description = description;
+        if( message.equals("No hay registro") ){
+            this.message = "No se encontró el registro";
+            this.description = "No se encontró el registro con ID: "+description;
+            this.code = 404;
+        }
+        else{
+            this.message = message;
+            this.description = description;
+            this.code = 500;
+        }
         this.class_path = class_path;
     }
 
@@ -38,6 +47,12 @@ public class ErrorService {
     public void setClass_path(String class_path) {
         this.class_path = class_path;
     }
-    
-    
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 }
