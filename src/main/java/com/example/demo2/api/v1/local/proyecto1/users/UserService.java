@@ -44,6 +44,23 @@ public class UserService {
         }
     }
     
+    public Object getById(Integer id){
+        try {
+            Optional<User> rowOptional = userRepository.findById(id);
+            if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
+                return new ErrorService(id.toString(), "", this.myClassName, 404 );
+            return rowOptional;
+        }
+        catch (Exception e) {
+            ErrorService errService = new ErrorService(
+                "No se obtuvo el usuario", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
+        }
+    }
+    
     public Object getByName( String name ){
         try {
             return userRepository.findByName(name);

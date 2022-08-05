@@ -38,7 +38,10 @@ public class DepartmentService {
     
     public Object getById(Integer id){
         try {
-            return departmentRepository.findById(id);
+            Optional<Department> rowOptional = departmentRepository.findById(id);
+            if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
+                return new ErrorService(id.toString(), "", this.myClassName, 404 );
+            return rowOptional;
         }
         catch (Exception e) {
             ErrorService errService = new ErrorService(

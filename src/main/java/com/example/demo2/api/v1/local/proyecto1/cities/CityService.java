@@ -31,7 +31,10 @@ public class CityService {
     
     public Object getById(Integer id){
         try {
-            return cityRepository.findById(id);
+            Optional<City> rowOptional = cityRepository.findById(id);
+            if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
+                return new ErrorService(id.toString(), "", this.myClassName, 404 );
+            return rowOptional;
         }
         catch (Exception e) {
             ErrorService errService = new ErrorService(

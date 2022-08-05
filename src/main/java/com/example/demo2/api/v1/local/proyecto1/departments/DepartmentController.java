@@ -186,7 +186,10 @@ public class DepartmentController {
         try {
             String message = "";
             Object resDel = this.departmentService.delete(id);
-            if( ! UtilsService.isErrorService(resDel) ) message = (String) resDel;
+            if( ! UtilsService.isErrorService(resDel) ){ 
+                message = (String) resDel;
+                resDel = null;
+            }
             
             HttpStatus httpStatus = response.validateService( resDel, 
                 message,

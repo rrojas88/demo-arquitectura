@@ -10,10 +10,11 @@ public class ErrorService {
     public String class_path;
     public int code;
 
+    // Eje: CategoryService
     public ErrorService(String message, String description, String class_path) {
         if( message.equals("No hay registro") ){
             this.message = "No se encontró el registro";
-            this.description = "No se encontró el registro con ID: "+description;
+            this.description = "No se encontró el registro con ID: " + description;
             this.code = 404;
         }
         else{
@@ -22,6 +23,19 @@ public class ErrorService {
             this.code = 500;
         }
         this.class_path = class_path;
+    }
+    
+    public ErrorService(String message, String description, String class_path, int code ) {
+        if( code == 404 ){
+            this.message = "No se encontró el registro";
+            this.description = "No se encontró el registro con ID: " + message;
+        }
+        else{
+            this.message = message;
+            this.description = description;
+        }
+        this.class_path = class_path;
+        this.code = code;
     }
 
     public String getMessage() {
