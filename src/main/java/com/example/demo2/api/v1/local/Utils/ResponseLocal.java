@@ -18,13 +18,16 @@ import org.springframework.validation.ObjectError;
 
 public class ResponseLocal {
     
+    public boolean success;
     public Integer code;
     public Object data;
     public String message;
+    public String description;
     
     private LogService logService;
     
     public ResponseLocal( LogService logService ){
+        this.success = true;
         this.code = 200;
         this.logService = logService;
     }
@@ -67,6 +70,7 @@ public class ResponseLocal {
         }
         else
         {
+            this.success = true;
             this.code = 200;
             this.message = message;
             this.data = data;
@@ -133,6 +137,7 @@ public class ResponseLocal {
         String payload,
         HttpServletRequest req
     ){
+        this.success = false;
         if( code == null ) this.code = 500;
         else this.code = code;
         
@@ -144,7 +149,9 @@ public class ResponseLocal {
         else{
             this.message = message;
         }
+        
         if( description == null || description.equals("") ) description = this.message;
+        this.description = description;
         
         String user_id = "";
         String user_login = "";
