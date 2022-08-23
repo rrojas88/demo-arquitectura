@@ -16,6 +16,11 @@
 	<description>Prueba Api 2</description>
 	<properties>
 		<java.version>11</java.version>
+                <!-- Propiedades del Wildfly  -->
+                <deploy.wildfly.host>127.0.0.1</deploy.wildfly.host>
+                <deploy.wildfly.port>9990</deploy.wildfly.port>
+                <deploy.wildfly.username>wildfly</deploy.wildfly.username>
+                <deploy.wildfly.password>w1ldFly</deploy.wildfly.password>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -25,6 +30,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+                        <exclusions><!-- Excluye alguna libs de registro pueden interrumpir  -->
+                            <exclusion>
+                                <groupId>ch.qos.logback</groupId>
+                                <artifactId>logback-classic</artifactId>
+                            </exclusion>
+                        </exclusions>
 		</dependency>
 
 		<dependency>
@@ -52,6 +63,8 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+                        <!-- Fix -->
+                        <version>1.5.2.RELEASE</version>  
 		</dependency>
                 <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
                 <dependency>
@@ -64,13 +77,39 @@
                     <artifactId>joda-time</artifactId>
                     <version>2.10.14</version>
                 </dependency>
+	 <dependency>
+	  <groupId>org.springframework.security</groupId>
+	  <artifactId>spring-security-core</artifactId>
+	  <version>5.7.1</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
+                                <!--
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+                                -->
+                                <groupId>org.wildfly.plugins</groupId>
+                                <artifactId>wildfly-maven-plugin</artifactId>
+                                <version>2.0.2.Final</version>
+                                <executions>
+                                    <execution>
+                                        <phase>install</phase>
+                                        <goals>
+                                            <goal>deploy</goal>
+                                        </goals>
+                                    </execution>
+                                </executions>
+                                <configuration>                
+                                    <filename>${project.build.finalName}.war</filename>
+                                    <hostname>${deploy.wildfly.host}</hostname>
+                                    <port>${deploy.wildfly.port}</port>
+                                    <username>${deploy.wildfly.username}</username>
+                                    <password>${deploy.wildfly.password}</password>
+                                </configuration>
 			</plugin>
 		</plugins>
 	</build>
