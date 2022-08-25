@@ -1,9 +1,10 @@
 
 package com.example.demo2.api.v1.local.Utils;
 
-import com.example.demo2.api.v1.local.Utils.logs.Log;
-import com.example.demo2.api.v1.local.Utils.logs.LogService;
+//import com.example.demo2.api.v1.local.Utils.logs.LogService2;
 import com.example.demo2.api.v1.local.proyecto1.auth.UserRolesPrincipal;
+import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
+import com.example.demo2.api.v1.local.proyecto1.logs.Log;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class ResponseLocal {
     public String message;
     public String description;
     
+    //private LogService2 logService;
     private LogService logService;
     
     public ResponseLocal( LogService logService ){

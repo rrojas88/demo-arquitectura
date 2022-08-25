@@ -1,5 +1,5 @@
 
-package com.example.demo2.api.v1.local.Utils.logs;
+package com.example.demo2.api.v1.local.proyecto1.logs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
