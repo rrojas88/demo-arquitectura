@@ -11,7 +11,8 @@ public class DepartmentDto {
     private String code;
     @NotEmpty(message = "El nombre del departamento es requerido.")
     private String name;
-    private Byte active;
+    //private Byte active;
+    private boolean active;
 
     public Integer getId() {
         return id;
@@ -37,11 +38,13 @@ public class DepartmentDto {
         this.name = name;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Byte active) {
+    //public void setActive(Byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

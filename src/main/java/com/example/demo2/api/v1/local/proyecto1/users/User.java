@@ -20,7 +20,8 @@ public class User {
     @Column( unique = true, nullable = false )
     private String email;
     private String password;
-    private Byte active;
+    //private Byte active;
+    private boolean active;
 
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable(name="user_roles", 
@@ -36,7 +37,8 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.active = 1;
+        //this.active = 1;
+        this.active = true;
     }
 
     public Integer getId() {
@@ -71,11 +73,13 @@ public class User {
         this.password = password;
     }
     
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Byte active) {
+    //public void setActive(Byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

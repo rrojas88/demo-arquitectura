@@ -1,0 +1,31 @@
+
+# 1. Cambio de Adapter de My a Pg ======================================================
+pom.xml
+ M src/main/java/com/example/demo2/api/v1/local/Utils/ResponseLocal.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/adapters/MysqlConfig.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/adapters/PostgresConfig.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/auth/UserRolesPrincipal.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/categories/Category.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/categories/CategoryDto.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/cities/City.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/cities/CityDto.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/cities/CityRepository.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/departments/Department.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/departments/DepartmentController.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/departments/DepartmentDto.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/departments/DepartmentRepository.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/departments/DepartmentService.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/logs/Log.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/logs/LogService.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/logs/LogThread.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/roles/Rol.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/users/User.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/users/UserDto.java
+ M src/main/java/com/example/demo2/api/v1/local/proyecto1/users/UserService.java
+ M src/main/resources/application.properties
+?? src/main/java/com/example/demo2/api/v1/local/proyecto1/logs/LogCtrl.java
+
+# Fin 1. Cambio de Adapter de My a Pg ====================================================
+
+
+

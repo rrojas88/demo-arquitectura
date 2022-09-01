@@ -4,7 +4,6 @@ package com.example.demo2.api.v1.local.proyecto1.departments;
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
-//import com.example.demo2.api.v1.local.Utils.logs.LogService2;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

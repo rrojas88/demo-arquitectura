@@ -16,19 +16,23 @@ public class Department {
     private String code;
     @Column( unique = true )
     private String name;
-    private Byte active;
+    //private Byte active;
+    private boolean active;
 
     public Department() {
-        this.active = 1;
+        //this.active = 1;
+        this.active = true;
     }
 
     public Department(String code, String name ) {
         this.code = code;
         this.name = name;
-        this.active = 1;
+        //this.active = 1;
+        this.active = true;
     }
     
-    public Department(Integer id, String code, String name, Byte active) {
+    //public Department(Integer id, String code, String name, Byte active) {
+    public Department(Integer id, String code, String name, boolean active) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -59,11 +63,13 @@ public class Department {
         this.name = name;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive( Byte active ) {
+    //public void setActive( Byte active ) {
+    public void setActive( boolean active ) {
         this.active = active;
     }
 

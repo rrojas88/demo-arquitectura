@@ -12,7 +12,8 @@ public class CategoryDto {
     //@NotBlank(message = "La imagen es requerida.")
     private String image;
     private MultipartFile file;
-    private Byte active;
+    //private Byte active;
+    private boolean active;
 
     public Integer getId() {
         return id;
@@ -46,11 +47,13 @@ public class CategoryDto {
         this.file = file;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Byte active) {
+    //public void setActive(Byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,12 @@ public class UserService {
     @Autowired
     RolService rolService;
     
-    //@Autowired
-    PasswordEncoder passwordEncoder;
+    //@Autowired //Error: Is there an unresolvable circular reference? -> authController
+    //PasswordEncoder passwordEncoder;
+    //@Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     
     private String myClassName = UserService.class.getName();
     
@@ -97,6 +103,7 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
     
+    
     public Object save( UserDto userDto )
     {
         try{
@@ -107,11 +114,25 @@ public class UserService {
                 );
                 return errService;
             }
+            
+            String passBd = "";
+            try {
+                passBd = this.passwordEncoder().encode( userDto.getPassword() );
+            } catch (Exception e) {
+                ErrorService errService = new ErrorService(
+                    "No se pudo cifrar la contraseña", 
+                    e.getMessage(), 
+                    this.myClassName
+                );
+                return errService;
+            }
+            
             User user = new User(
                 userDto.getName(), 
                 userDto.getEmail(), 
-                passwordEncoder.encode( userDto.getPassword() )
+                passBd
             );
+            
             // Establecer Roles del Usuario
             Set<Rol> roles = new HashSet<>();
             roles.add(rolService.getByName(RolName.ROLE_LECTURA).get());
@@ -123,8 +144,16 @@ public class UserService {
             }
             user.setRoles(roles);
             
-            Object row = userRepository.save(user);;
+            Object row = userRepository.save(user);
             return null;
+        }
+        catch ( DataAccessException e) {
+            ErrorService errService = new ErrorService(
+                "No se pudo guardar el usuario", 
+                e.getMessage(), 
+                this.myClassName
+            );
+            return errService;
         }
         catch (Exception e) {
             ErrorService errService = new ErrorService(

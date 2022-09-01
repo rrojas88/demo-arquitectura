@@ -1,15 +1,20 @@
 
 package com.example.demo2.api.v1.local.Utils;
 
-//import com.example.demo2.api.v1.local.Utils.logs.LogService2;
 import com.example.demo2.api.v1.local.proyecto1.auth.UserRolesPrincipal;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
 import com.example.demo2.api.v1.local.proyecto1.logs.Log;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+//import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.http.HttpStatus;
@@ -26,22 +31,13 @@ public class ResponseLocal {
     public String message;
     public String description;
     
-    //private LogService2 logService;
     private LogService logService;
     
     public ResponseLocal( LogService logService ){
         this.success = true;
         this.code = 200;
         this.logService = logService;
-    }
-    
-    /*
-    public ResponseLocal( Integer code, String message, 
-        ArrayList data, HttpServletRequest req
-    ){
-        if( code == null ) this.code = 200;
-        else this.code = code;
-    } */   
+    }   
     
     public HttpStatus validateService(
         Object data,
@@ -109,7 +105,8 @@ public class ResponseLocal {
         }  
         
         String url = this.getUrl(req);
-        String dateTimeNow = this.getDateTimeNow();
+        //String dateTimeNow = this.getDateTimeNow();
+        ZonedDateTime dateTimeNow = this.getDateTimeNow();
         String ip = this.getIpAddr(req);
         
         Log log = new Log();
@@ -124,9 +121,9 @@ public class ResponseLocal {
         log.setUrl(url);
         log.setMethod(req.getMethod());
         log.setPayload(payload);
-        //System.out.println( "\n--- LOG:\n" + log.toString() );
-        
+
         Log row = this.logService.save(log);
+        //this.data = row;
     }
     
     
@@ -165,7 +162,8 @@ public class ResponseLocal {
         }      
         
         String url = this.getUrl(req);
-        String dateTimeNow = this.getDateTimeNow();
+        //String dateTimeNow = this.getDateTimeNow();
+        ZonedDateTime dateTimeNow = this.getDateTimeNow();
         String ip = this.getIpAddr(req);
         
         Log log = new Log();
@@ -201,10 +199,19 @@ public class ResponseLocal {
    } 
     
     
-    private String getDateTimeNow(){
+    //private String getDateTimeNow(){
+    private ZonedDateTime getDateTimeNow(){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         String dateTimeNow = DateTime.now(DateTimeZone.forID("America/Bogota")).toString(formatter);
-        return dateTimeNow;
+        //return dateTimeNow + ".00";
+        //return DateTime.now(DateTimeZone.forID("America/Bogota"));
+        //return Date.valueOf(LocalDate.now());
+        //return LocalDate.now(DateTimeZone.forID("America/Bogota")).toDate();
+        //return LocalDateTime.parse(dateTimeNow, formatter);
+        //return ZonedDateTime.now();
+        ZoneId zoneIdCOL = ZoneId.of("America/Bogota");
+        ZonedDateTime dateTime_ = ZonedDateTime.now(zoneIdCOL);
+        return dateTime_;
     }
     
     

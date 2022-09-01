@@ -3,7 +3,6 @@ package com.example.demo2.api.v1.local.proyecto1.departments;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
-import com.example.demo2.api.v1.local.proyecto1.cities.City;
 import com.example.demo2.api.v1.local.proyecto1.cities.CityService;
 import java.util.ArrayList;
 import java.util.Optional;

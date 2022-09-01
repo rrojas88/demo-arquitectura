@@ -15,7 +15,9 @@ public class UserDto {
     private String email;
     @NotBlank(message = "La contraseña es requerida.")
     private String password;
-    private Byte active = 1;
+    //private Byte active = 1;
+    private boolean active;
+    
     // Cadenas por ser JSONs
     private Set<String> roles = new HashSet<>();
 
@@ -43,11 +45,13 @@ public class UserDto {
         this.password = password;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Byte active) {
+    //public void setActive(Byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

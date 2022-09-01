@@ -15,10 +15,12 @@ public class City {
     private Integer department_id;
     private String code;
     private String name;
-    private Byte active;
+    private boolean active;
+    //private Byte active;
 
     public City() {
-        this.active = 1;
+        //this.active = 1;
+        this.active = true;
     }
 
     public Integer getId() {
@@ -53,11 +55,13 @@ public class City {
         this.name = name;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Byte active) {
+    //public void setActive(Byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

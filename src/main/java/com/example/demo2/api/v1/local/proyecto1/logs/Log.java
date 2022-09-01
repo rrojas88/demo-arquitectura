@@ -1,7 +1,13 @@
 
 package com.example.demo2.api.v1.local.proyecto1.logs;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import javax.persistence.*;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -11,7 +17,7 @@ public class Log {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( unique = true, nullable = false )
-    private long id;
+    private Long id;
     
     private Integer code;
     private String message;
@@ -19,8 +25,14 @@ public class Log {
     private String class_path;
     private String user_id;
     private String user_login;
-    @Column( nullable = false )
-    private String row_date_time;
+    //@Column( nullable = false, name="row_date_time", columnDefinition="TIMESTAMP WITHOUT TIME ZONE" )
+    @Column( nullable = false, name="row_date_time" )
+    //@Temporal( TemporalType.DATE )
+    //@Temporal( TemporalType.TIMESTAMP )
+    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
+    private ZonedDateTime row_date_time;
     private String ip;
     private String url;
     private String method;
@@ -28,12 +40,13 @@ public class Log {
     
     public Log() {
     }
+    
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -85,11 +98,11 @@ public class Log {
         this.user_login = user_login;
     }
 
-    public String getRow_date_time() {
+    public ZonedDateTime getRow_date_time() {
         return row_date_time;
     }
 
-    public void setRow_date_time(String row_date_time) {
+    public void setRow_date_time(ZonedDateTime row_date_time) {
         this.row_date_time = row_date_time;
     }
 

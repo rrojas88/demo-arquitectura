@@ -18,14 +18,16 @@ public class Rol {
     @Enumerated(EnumType.STRING)
     private RolName name;
     //private String name;
-    private Byte active;
+    //private Byte active;
+    private boolean active;
     
     public Rol(){
     }
 
     public Rol(@NotNull RolName name) {
         this.name = name;
-        this.active = 1;
+        //this.active = 1;
+        this.active = true;
     }
 
     public Integer getId() {
@@ -44,11 +46,13 @@ public class Rol {
         this.name = name;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Byte active) {
+    //public void setActive(Byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
     

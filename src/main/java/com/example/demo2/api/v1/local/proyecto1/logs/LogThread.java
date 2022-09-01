@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class LogThread extends Thread {
@@ -34,7 +34,7 @@ public class LogThread extends Thread {
         this.log.setUrl(url);
         this.log.setUser_id(user_id);
         this.log.setUser_login(user_login);
-        this.log.setRow_date_time(dateTimeNow);
+        //this.log.setRow_date_time(dateTimeNow);
         this.log.setIp(ip);
         this.log.setPayload(payload);
     }

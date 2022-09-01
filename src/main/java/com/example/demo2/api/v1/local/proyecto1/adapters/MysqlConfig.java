@@ -1,6 +1,7 @@
 
 package com.example.demo2.api.v1.local.proyecto1.adapters;
 
+/*
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
@@ -20,8 +21,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    entityManagerFactoryRef = "userEntityManagerFactory", 
-    transactionManagerRef = "userTransactionManager", 
+    entityManagerFactoryRef = "mysqlEntityManagerFactory", 
+    transactionManagerRef = "mysqlTransactionManager", 
 	basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
 )
 public class MysqlConfig {
@@ -31,8 +32,8 @@ public class MysqlConfig {
     @Autowired
     private Environment env;
     
-    @Bean(name = "userDataSource")
-	public DataSource userDatasource() {
+    @Bean(name = "mysqlDataSource")
+	public DataSource mysqlDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setUrl(env.getProperty("mysql.datasource.url"));
 		dataSource.setUsername(env.getProperty("mysql.datasource.username"));
@@ -42,10 +43,10 @@ public class MysqlConfig {
 	}
     
     
-    @Bean(name = "userEntityManagerFactory")
+    @Bean(name = "mysqlEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(userDatasource());
+		em.setDataSource(mysqlDataSource());
 		em.setPackagesToScan( this.packages_models );
 		
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -61,7 +62,7 @@ public class MysqlConfig {
 	}
     
     
-    @Bean(name = "userTransactionManager")
+    @Bean(name = "mysqlTransactionManager")
 	public PlatformTransactionManager transactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
@@ -69,4 +70,7 @@ public class MysqlConfig {
 		return transactionManager;
 	}
     
-}
+} */
+
+
+public class MysqlConfig { }

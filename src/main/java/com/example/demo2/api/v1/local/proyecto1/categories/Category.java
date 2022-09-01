@@ -15,10 +15,12 @@ public class Category {
     
     private String name;
     private String image;
-    private Byte active;
+    //private Byte active;
+    private boolean active;
 
     public Category() {
-        this.active = 1;
+        //this.active = 1;
+        this.active = true;
     }
 
     public Integer getId() {
@@ -45,11 +47,13 @@ public class Category {
         this.image = image;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Byte active) {
+    //public void setActive(Byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

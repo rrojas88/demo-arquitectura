@@ -18,13 +18,16 @@ public class UserRolesPrincipal implements UserDetails {
     private String name;
     private String email;
     private String password;
-    private Byte active;
+    //private Byte active;
+    private boolean active;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserRolesPrincipal(
         Integer id,
         String name, String email, 
-        String password, Byte active, 
+        String password, 
+        //Byte active,
+        boolean active,
         Collection<? extends GrantedAuthority> authorities 
     ) {
         this.id = id;
@@ -93,7 +96,8 @@ public class UserRolesPrincipal implements UserDetails {
         return email;
     }
 
-    public Byte getActive() {
+    //public Byte getActive() {
+    public boolean getActive() {
         return active;
     }
     
