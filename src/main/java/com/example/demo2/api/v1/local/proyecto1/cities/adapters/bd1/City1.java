@@ -1,21 +1,28 @@
 
+package com.example.demo2.api.v1.local.proyecto1.cities.adapters.bd1;
 
-package com.example.demo2.api.v1.local.proyecto1.cities;
+import com.example.demo2.api.v1.local.proyecto1.cities.adapters.City;
+import javax.persistence.*;
 
-import javax.validation.constraints.*;
-
-
-public class CityDto {
+@Entity
+@Table(name = "cities")
+public class City1 extends City {
     
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( unique = true, nullable = false )
     private Integer id;
-    @NotNull(message = "El identificador del departamento es requerido.")
+    
     private Integer department_id;
-    @NotBlank(message = "El código de la ciudad es requerido.")
     private String code;
-    @NotEmpty(message = "El nombre de la ciudad es requerido.")
     private String name;
-    //private Byte active;
     private boolean active;
+    //private Byte active;
+
+    public City1() {
+        //this.active = 1;
+        this.active = true;
+    }
 
     public Integer getId() {
         return id;
@@ -32,7 +39,7 @@ public class CityDto {
     public void setDepartment_id(Integer department_id) {
         this.department_id = department_id;
     }
-
+    
     public String getCode() {
         return code;
     }
@@ -61,6 +68,6 @@ public class CityDto {
 
     @Override
     public String toString() {
-        return "CityDto{" + "id=" + id + ", department_id=" + department_id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
+        return "City{" + "id=" + id + ", department_id=" + department_id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
     }
 }

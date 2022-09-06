@@ -1,33 +1,32 @@
 
-package com.example.demo2.api.v1.local.proyecto1.departments;
+package com.example.demo2.api.v1.local.proyecto1.departments.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.proyecto1.cities.CityService;
-import com.example.demo2.api.v1.local.proyecto1.departments.adapters.DepartmentAdapter;
-import com.example.demo2.api.v1.local.proyecto1.departments.adapters.DepartmentDto;
-import java.util.ArrayList;
+import com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1.Department1;
+import com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1.DepartmentRepository1;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class DepartmentService {
+public class DepartmentAdapter {
 
     @Autowired
-    DepartmentAdapter departmentAdapter;
+    DepartmentRepository1 departmentRepository;
     
     @Autowired
     CityService cityService;
 
-    private String myClassName = DepartmentService.class.getName();
+    private String myClassName = DepartmentAdapter.class.getName();
 
     public Object getAll() {
         try {
-            return departmentAdapter.getAll();
+            return departmentRepository.findAll();
         } catch (Exception e) {
             return new ErrorService(
-                "No se listaron los Departamentos",
+                "No se listaron los Departamentos.",
                 e.getMessage(),
                 this.myClassName
             );
@@ -36,7 +35,11 @@ public class DepartmentService {
 
     public Object getById(Integer id) {
         try {
-            return departmentAdapter.getById(id);
+            Optional<Department1> rowOptional = departmentRepository.findById(id);
+            if (!rowOptional.isPresent() || rowOptional.isEmpty()) {
+                return new ErrorService(id.toString(), "", this.myClassName, 404);
+            }
+            return rowOptional;
         } catch (Exception e) {
             return new ErrorService(
                 "No se obtuvo el Departamento",
@@ -48,7 +51,7 @@ public class DepartmentService {
 
     public Object getByName(String name) {
         try {
-            return departmentAdapter.getByName(name);
+            return departmentRepository.findByName(name);
         } catch (Exception e) {
             return new ErrorService(
                 "No se obtuvo el Departamento",
@@ -60,7 +63,7 @@ public class DepartmentService {
 
     public Object getByCode(String code) {
         try {
-            return departmentAdapter.getByCode(code);
+            return departmentRepository.findByCode(code);
         } catch (Exception e) {
             return new ErrorService(
                 "No se obtuvo el Departamento",
@@ -70,9 +73,20 @@ public class DepartmentService {
         }
     }
 
-    public Object save(DepartmentDto depto) {
+    public Object save(DepartmentDto deptoDto) {
         try {
-            return departmentAdapter.save(depto);
+            Department1 depto = new Department1();
+            if( deptoDto.getId() != null ){
+                depto.setId( deptoDto.getId() );
+                depto.setCode( deptoDto.getCode() );
+                depto.setName( deptoDto.getName() );
+                depto.setActive( deptoDto.getActive() );
+            }
+            else{
+                depto.setCode( deptoDto.getCode() );
+                depto.setName( deptoDto.getName() );
+            }
+            return departmentRepository.save(depto);
         } catch (Exception e) {
             return new ErrorService(
                 "No se pudo guardar el Departamento",
@@ -84,18 +98,12 @@ public class DepartmentService {
 
     public Object delete(Integer id) {
         try {
-            Object cities = cityService.getByDepartment_id(id);
-            if (UtilsService.isErrorService(cities)) {
-                return cities;
+            Optional<Department1> row = departmentRepository.findById(id);
+            if (!row.isEmpty()) {
+                departmentRepository.deleteById(id);
+                return "Se eliminó el registro con ID: " + id;
             }
-            if (cities != null && !((ArrayList) cities).isEmpty()) {
-                return new ErrorService(
-                    "No se puede eliminar el departamento porque tiene ciudades asociadas",
-                    "",
-                    this.myClassName
-                );
-            }
-            return departmentAdapter.delete(id);
+            return "No se encontró el registro con ID: " + id;
         } catch (Exception e) {
             return new ErrorService(
                 "No se eliminó el Departamento",

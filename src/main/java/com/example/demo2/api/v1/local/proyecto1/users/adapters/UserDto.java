@@ -1,11 +1,12 @@
 
-package com.example.demo2.api.v1.local.proyecto1.users;
+package com.example.demo2.api.v1.local.proyecto1.users.adapters;
 
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.UserDto1;
 import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserDto {
+public class UserDto extends UserDto1 {
     
     // No NULO /No cadena vacia /No espacio en blanco
     @NotBlank(message = "El nombre es requerido.")

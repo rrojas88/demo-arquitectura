@@ -4,6 +4,7 @@ package com.example.demo2.api.v1.local.proyecto1.departments;
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
+import com.example.demo2.api.v1.local.proyecto1.departments.adapters.DepartmentDto;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -141,18 +142,7 @@ public class DepartmentController {
             return new ResponseEntity<Object>( response, HttpStatus.BAD_REQUEST );
         }
         try {
-            Department depto = new Department();
-            if( deptoDto.getId() != null ){
-                depto.setId( deptoDto.getId() );
-                depto.setCode( deptoDto.getCode() );
-                depto.setName( deptoDto.getName() );
-                depto.setActive( deptoDto.getActive() );
-            }
-            else{
-                depto.setCode( deptoDto.getCode() );
-                depto.setName( deptoDto.getName() );
-            }
-            Object row = this.departmentService.save(depto);
+            Object row = this.departmentService.save(deptoDto);
             HttpStatus httpStatus = response.validateService( row, 
                 "Departamento guardado correctamente",
                 this.myClassName, 

@@ -1,24 +1,33 @@
 
-package com.example.demo2.api.v1.local.proyecto1.categories;
+package com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1;
 
+import com.example.demo2.api.v1.local.proyecto1.roles.adapters.Rol;
+import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "roles")
+public class Rol1 extends Rol {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( unique = true, nullable = false )
     private Integer id;
     
-    private String name;
-    private String image;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private RolName name;
+    //private String name;
     //private Byte active;
     private boolean active;
+    
+    public Rol1(){
+    }
 
-    public Category() {
+    public Rol1(@NotNull RolName name) {
+        this.name = name;
         //this.active = 1;
         this.active = true;
     }
@@ -31,20 +40,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
+    public RolName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(RolName name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     //public Byte getActive() {
@@ -59,6 +60,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "id=" + id + ", name=" + name + ", image=" + image + ", active=" + active + '}';
+        return "Rol1{" + "id=" + id + ", name=" + name + ", active=" + active + '}';
     }
+    
 }

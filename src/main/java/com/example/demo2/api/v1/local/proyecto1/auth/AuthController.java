@@ -3,10 +3,9 @@ package com.example.demo2.api.v1.local.proyecto1.auth;
 
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsLocal;
-//import com.example.demo2.api.v1.local.Utils.logs.LogService2;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
 import com.example.demo2.api.v1.local.proyecto1.auth.login.LoginDto;
-import com.example.demo2.api.v1.local.proyecto1.users.UserDto;
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.UserDto;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

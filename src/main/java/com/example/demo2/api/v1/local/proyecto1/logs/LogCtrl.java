@@ -2,15 +2,10 @@
 package com.example.demo2.api.v1.local.proyecto1.logs;
 
 
+import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.Log1;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import javax.servlet.http.HttpServletRequest;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +24,7 @@ public class LogCtrl {
     @GetMapping( path = "/test")
     public ResponseEntity<?> getAll( HttpServletRequest req ){
         System.out.println("\n... ... TestCtrl -> Pasa x1 ");
-        Log log = new Log();
+        Log1 log = new Log1();
         log.setCode(300);
         log.setMessage("Prueba");
         log.setDescription("Probando");
@@ -54,18 +49,6 @@ public class LogCtrl {
     }
     
     private ZonedDateTime getDateTimeNow(){
-        /*
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        String dateTimeNow = DateTime.now(DateTimeZone.forID("America/Bogota")).toString(formatter);
-        return LocalDateTime.parse(dateTimeNow, formatter); */
-        
-        //Date date_ = LocalDate.now(DateTimeZone.forID("America/Bogota")).toDate();
-        
-        //ZonedDateTime date_ = ZonedDateTime.now();
-        /*
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        String dateTimeNow = DateTime.now(DateTimeZone.forID("America/Bogota")).toString(formatter);
-        ZonedDateTime date_ = ZonedDateTime.parse(dateTimeNow, java.time.format.DateTimeFormatter.ISO_DATE); */
         ZoneId zoneIdCOL = ZoneId.of("America/Bogota");
         ZonedDateTime date_ = ZonedDateTime.now(zoneIdCOL);
         

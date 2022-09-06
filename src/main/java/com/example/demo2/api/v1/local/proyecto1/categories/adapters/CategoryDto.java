@@ -1,10 +1,11 @@
 
-package com.example.demo2.api.v1.local.proyecto1.categories;
+package com.example.demo2.api.v1.local.proyecto1.categories.adapters;
 
+import com.example.demo2.api.v1.local.proyecto1.categories.adapters.bd1.CategoryDto1;
 import javax.validation.constraints.*;
 import org.springframework.web.multipart.MultipartFile;
 
-public class CategoryDto {
+public class CategoryDto extends CategoryDto1 {
     
     private Integer id;
     @NotEmpty(message = "El nombre de la categoría es requerido.")
@@ -12,7 +13,6 @@ public class CategoryDto {
     //@NotBlank(message = "La imagen es requerida.")
     private String image;
     private MultipartFile file;
-    //private Byte active;
     private boolean active;
 
     public Integer getId() {

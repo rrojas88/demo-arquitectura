@@ -1,9 +1,9 @@
 
 package com.example.demo2.api.v1.local.proyecto1.auth;
 
-import com.example.demo2.api.v1.local.proyecto1.users.User;
+
 import com.example.demo2.api.v1.local.proyecto1.users.UserService;
-import java.util.Optional;
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.User1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,7 +23,7 @@ public class UserRolesPrincipalService implements UserDetailsService {
         //User user = userService.getByName(username).get();
         // Obtiene el Usuario desde la BD [ por Correo ]
         //User user = userService.getByEmail(email).get();
-        User user = (User)userService.getByEmail(email);
+        User1 user = (User1)userService.getByEmail(email);
 
         // Convierte el Usuario en el "Principal" con sus privilegios
         return UserRolesPrincipal.build(user);

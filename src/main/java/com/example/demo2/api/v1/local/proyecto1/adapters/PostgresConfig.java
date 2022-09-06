@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -20,14 +22,36 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
+/*
 @EnableJpaRepositories(
     entityManagerFactoryRef = "postgresEntityManagerFactory", 
     transactionManagerRef = "postgresTransactionManager", 
 	basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
+    //basePackages = {
+    //"com.example.demo2.api.v1.local.proyecto1",
+    //includeFilters = @Filter(type = FilterType.REGEX, pattern="com.example.demo2.api.v1.local.proyecto1.*.adapters",
+    //} 
 )
+*/
+@EnableJpaRepositories(
+    entityManagerFactoryRef = "postgresEntityManagerFactory", 
+    transactionManagerRef = "postgresTransactionManager"
+    , basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
+    , includeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = {"com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1.*"})
+        //@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1.*")
+    }
+)
+/*
+@ComponentScan(
+    basePackages = {"com.example.demo2.api.v1.local.proyecto1"},
+    includeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern =         "com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1")
+ ) */
 public class PostgresConfig {
     
-    public String packages_models = "com.example.demo2.api.v1.local.proyecto1";
+    //public String packages_models = "com.example.demo2.api.v1.local.proyecto1";
+    public String packages_models = "com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1";
+
     
     @Autowired
 	private Environment env;

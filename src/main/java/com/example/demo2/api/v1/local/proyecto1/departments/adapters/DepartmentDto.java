@@ -1,17 +1,16 @@
 
-package com.example.demo2.api.v1.local.proyecto1.departments;
+package com.example.demo2.api.v1.local.proyecto1.departments.adapters;
 
+import com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1.DepartmentDto1;
 import javax.validation.constraints.*;
 
-
-public class DepartmentDto {
+public class DepartmentDto extends  DepartmentDto1 {
     
     private Integer id;
     @NotBlank(message = "El código del departamento es requerido.")
     private String code;
     @NotEmpty(message = "El nombre del departamento es requerido.")
     private String name;
-    //private Byte active;
     private boolean active;
 
     public Integer getId() {

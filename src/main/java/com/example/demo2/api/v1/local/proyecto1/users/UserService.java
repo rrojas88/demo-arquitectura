@@ -2,15 +2,11 @@
 package com.example.demo2.api.v1.local.proyecto1.users;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.proyecto1.roles.Rol;
-import com.example.demo2.api.v1.local.proyecto1.roles.RolName;
 import com.example.demo2.api.v1.local.proyecto1.roles.RolService;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.UserAdapter;
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.UserDto;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     
     @Autowired
-    UserRepository userRepository;
+    UserAdapter userAdapter;
     
     @Autowired
     RolService rolService;
@@ -38,130 +34,77 @@ public class UserService {
     
     public Object getAll(){
         try {
-            return userRepository.findAll();
+            return userAdapter.getAll();
         }
         catch (Exception e) {
-            ErrorService errService = new ErrorService(
+            return new ErrorService(
                 "No se listaron los Usuarios", 
                 e.getMessage(), 
                 this.myClassName
             );
-            return errService;
         }
     }
     
     public Object getById(Integer id){
         try {
-            Optional<User> rowOptional = userRepository.findById(id);
-            if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
-                return new ErrorService(id.toString(), "", this.myClassName, 404 );
-            return rowOptional;
+            return userAdapter.getById(id);
         }
         catch (Exception e) {
-            ErrorService errService = new ErrorService(
+            return new ErrorService(
                 "No se obtuvo el usuario", 
                 e.getMessage(), 
                 this.myClassName
             );
-            return errService;
         }
     }
     
     public Object getByName( String name ){
         try {
-            return userRepository.findByName(name);
+            return userAdapter.getByName(name);
         }
         catch (Exception e) {
-            ErrorService errService = new ErrorService(
+            return new ErrorService(
                 "No se obtuvo el Usuario", 
                 e.getMessage(), 
                 this.myClassName
             );
-            return errService;
         }
     }
     
     public Object getByEmail( String email ){ // Optional<User>
         try {
-            return userRepository.findByEmail(email);
+            return userAdapter.getByEmail(email);
         }
         catch (Exception e) {
-            ErrorService errService = new ErrorService(
+            return new ErrorService(
                 "No se obtuvo el Usuario", 
                 e.getMessage(), 
                 this.myClassName
             );
-            return errService;
-        } /* */
+        }
     }
     
     public boolean existsByName(String name ){
-        return userRepository.existsByName(name);
+        return userAdapter.existsByName(name);
     }
     
     public boolean existsByEmail(String email ){
-        return userRepository.existsByEmail(email);
+        return userAdapter.existsByEmail(email);
     }
     
     
     public Object save( UserDto userDto )
     {
         try{
-            if( this.existsByEmail( userDto.getEmail() ) ){
-                ErrorService errService = new ErrorService(
-                    "Este correo ya está registrado", 
-                    "", this.myClassName
-                );
-                return errService;
-            }
-            
-            String passBd = "";
-            try {
-                passBd = this.passwordEncoder().encode( userDto.getPassword() );
-            } catch (Exception e) {
-                ErrorService errService = new ErrorService(
-                    "No se pudo cifrar la contraseña", 
-                    e.getMessage(), 
-                    this.myClassName
-                );
-                return errService;
-            }
-            
-            User user = new User(
-                userDto.getName(), 
-                userDto.getEmail(), 
-                passBd
-            );
-            
-            // Establecer Roles del Usuario
-            Set<Rol> roles = new HashSet<>();
-            roles.add(rolService.getByName(RolName.ROLE_LECTURA).get());
-            if( userDto.getRoles().contains("Usuario") || userDto.getRoles().contains("Usuario normal") ){
-                roles.add( rolService.getByName(RolName.ROLE_USUARIO).get() );
-            }
-            if( userDto.getRoles().contains("Admin") || userDto.getRoles().contains("Administrador") ){
-                roles.add( rolService.getByName(RolName.ROLE_ADMIN).get() );
-            }
-            user.setRoles(roles);
-            
-            Object row = userRepository.save(user);
+            Object row = userAdapter.save(userDto);
             return null;
         }
-        catch ( DataAccessException e) {
-            ErrorService errService = new ErrorService(
-                "No se pudo guardar el usuario", 
-                e.getMessage(), 
-                this.myClassName
-            );
-            return errService;
-        }
         catch (Exception e) {
-            ErrorService errService = new ErrorService(
+            return new ErrorService(
                 "No se pudo guardar el usuario", 
                 e.getMessage(), 
                 this.myClassName
             );
-            return errService;
         }
     }
     

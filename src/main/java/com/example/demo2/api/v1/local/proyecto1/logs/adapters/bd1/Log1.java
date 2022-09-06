@@ -1,18 +1,15 @@
 
-package com.example.demo2.api.v1.local.proyecto1.logs;
+package com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1;
 
+import com.example.demo2.api.v1.local.proyecto1.logs.adapters.Log;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import javax.persistence.*;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
 @Table(name = "logs")
-public class Log {
+public class Log1 extends Log {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -25,12 +22,7 @@ public class Log {
     private String class_path;
     private String user_id;
     private String user_login;
-    //@Column( nullable = false, name="row_date_time", columnDefinition="TIMESTAMP WITHOUT TIME ZONE" )
     @Column( nullable = false, name="row_date_time" )
-    //@Temporal( TemporalType.DATE )
-    //@Temporal( TemporalType.TIMESTAMP )
-    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private ZonedDateTime row_date_time;
     private String ip;
@@ -38,10 +30,9 @@ public class Log {
     private String method;
     private String payload;
     
-    public Log() {
+    public Log1() {
     }
     
-
     public Long getId() {
         return id;
     }
