@@ -1,11 +1,12 @@
 
 package com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1;
 
+import com.example.demo2.api.v1.local.proyecto1.departments.adapters.Department;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "departments")
-public class Department1 {
+public class Department1 extends Department {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

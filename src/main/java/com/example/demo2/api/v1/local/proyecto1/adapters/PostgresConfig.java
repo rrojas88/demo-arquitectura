@@ -22,36 +22,21 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-/*
-@EnableJpaRepositories(
-    entityManagerFactoryRef = "postgresEntityManagerFactory", 
-    transactionManagerRef = "postgresTransactionManager", 
-	basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
-    //basePackages = {
-    //"com.example.demo2.api.v1.local.proyecto1",
-    //includeFilters = @Filter(type = FilterType.REGEX, pattern="com.example.demo2.api.v1.local.proyecto1.*.adapters",
-    //} 
-)
-*/
 @EnableJpaRepositories(
     entityManagerFactoryRef = "postgresEntityManagerFactory", 
     transactionManagerRef = "postgresTransactionManager"
-    , basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
+   // , basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
+    , basePackages =  "com.example.demo2.api.v1.local.proyecto1"
     , includeFilters = {
         @ComponentScan.Filter(type = FilterType.REGEX, pattern = {"com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1.*"})
-        //@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1.*")
+    } 
+    , excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = {"com.example.demo2.api.v1.local.proyecto1.*.adapters.bd2.*"})
     }
 )
-/*
-@ComponentScan(
-    basePackages = {"com.example.demo2.api.v1.local.proyecto1"},
-    includeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern =         "com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1")
- ) */
 public class PostgresConfig {
     
-    //public String packages_models = "com.example.demo2.api.v1.local.proyecto1";
     public String packages_models = "com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1";
-
     
     @Autowired
 	private Environment env;
@@ -81,10 +66,10 @@ public class PostgresConfig {
 		properties.put("hibernate.hbm2ddl.auto", env.getProperty("postgres.jpa.hibernate.ddl-auto"));
 		properties.put("hibernate.show-sql", env.getProperty("postgres.jpa.show-sql"));
 		//properties.put("hibernate.dialect", env.getProperty("postgres.jpa.database-platform"));
-        properties.put("hibernate.dialect", env.getProperty("postgres.jpa.properties.hibernate.dialect"));
-        //properties.put("spring.jpa.generate-ddl", env.getProperty("spring.jpa.generate-ddl"));
-        //properties.put("logging.level.org.hibernate.SQL", env.getProperty("logging.level.org.hibernate.SQL"));
-        //properties.put("logging.level.org.hibernate.type.descriptor.sql.BasicBinder", env.getProperty("logging.level.org.hibernate.type.descriptor.sql.BasicBinder"));
+                   properties.put("hibernate.dialect", env.getProperty("postgres.jpa.properties.hibernate.dialect"));
+                   //properties.put("spring.jpa.generate-ddl", env.getProperty("spring.jpa.generate-ddl"));
+                   //properties.put("logging.level.org.hibernate.SQL", env.getProperty("logging.level.org.hibernate.SQL"));
+                   //properties.put("logging.level.org.hibernate.type.descriptor.sql.BasicBinder", env.getProperty("logging.level.org.hibernate.type.descriptor.sql.BasicBinder"));
 		
 		em.setJpaPropertyMap(properties);
 		return em;

@@ -1,82 +1,30 @@
 
-package com.example.demo2.api.v1.local.proyecto1.departments;
+package com.example.demo2.api.v1.local.proyecto1.departments.adapters;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "departments")
-public class Department {
+public abstract class Department {
     
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( unique = true, nullable = false )
-    private Integer id;
-    
-    @Column( unique = true )
-    private String code;
-    @Column( unique = true )
-    private String name;
-    //private Byte active;
-    private boolean active;
+    Integer id;
+    String code;
+    String name;
+    //Byte active;
+    boolean active;
 
-    public Department() {
-        //this.active = 1;
-        this.active = true;
-    }
+    public abstract Integer getId();
 
-    public Department(String code, String name ) {
-        this.code = code;
-        this.name = name;
-        //this.active = 1;
-        this.active = true;
-    }
-    
-    //public Department(Integer id, String code, String name, Byte active) {
-    public Department(Integer id, String code, String name, boolean active) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.active = active;
-    }
+    public abstract void setId(Integer id);
 
-    public Integer getId() {
-        return id;
-    }
+    public abstract String getCode();
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public abstract void setCode(String code);
 
-    public String getCode() {
-        return code;
-    }
+    public abstract String getName();
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public abstract void setName(String name);
 
     //public Byte getActive() {
-    public boolean getActive() {
-        return active;
-    }
+    public abstract boolean getActive();
 
     //public void setActive( Byte active ) {
-    public void setActive( boolean active ) {
-        this.active = active;
-    }
+    public abstract void setActive( boolean active );
 
-    @Override
-    public String toString() {
-        return "Department{" + "id=" + id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
-    }
-    
-    
 }

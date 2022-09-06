@@ -1,13 +1,18 @@
 
 package com.example.demo2.api.v1.local.proyecto1.adapters;
 
-/*
+
+//public class MysqlConfig { }
+
+/*  */
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -22,12 +27,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories(
     entityManagerFactoryRef = "mysqlEntityManagerFactory", 
-    transactionManagerRef = "mysqlTransactionManager", 
-	basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
+    transactionManagerRef = "mysqlTransactionManager"
+    //, basePackages = { "com.example.demo2.api.v1.local.proyecto1"}
+    , basePackages = "com.example.demo2.api.v1.local.proyecto1"
+    , includeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = {"com.example.demo2.api.v1.local.proyecto1.*.adapters.bd2.*"})
+    } 
+    , excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = {"com.example.demo2.api.v1.local.proyecto1.*.adapters.bd1s.*"})
+    }
 )
 public class MysqlConfig {
     
-    public String packages_models = "com.example.demo2.api.v1.local.proyecto1";
+    public String packages_models = "com.example.demo2.api.v1.local.proyecto1.*.adapters.bd2";
     
     @Autowired
     private Environment env;
@@ -70,7 +82,5 @@ public class MysqlConfig {
 		return transactionManager;
 	}
     
-} */
-
-
-public class MysqlConfig { }
+}
+/*    */
