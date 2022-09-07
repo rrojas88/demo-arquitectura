@@ -1,14 +1,16 @@
 
-package com.example.demo2.api.v1.local.proyecto1.mytasks;
+package com.example.demo2.api.v1.local.proyecto1.actions;
 
 import com.example.demo2.api.v1.local.Utils.ResponseLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
+import com.example.demo2.api.v1.local.proyecto1.actions.adapters.ActionDto;
+
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
-import com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.MytaskDto;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,42 +19,34 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/v1/local/proyecto1/mytasks")
-public class MytaskController {
+@RequestMapping("/v1/local/proyecto1/actions")
+public class ActionController {
     
     @Autowired
-    MytaskService mytasksService;
+    ActionService actionService;
+    
     @Autowired
     LogService logService;
     
-    private String myClassName = MytaskController.class.getName();
+    private String myClassName = ActionController.class.getName();
     
-    private final String module = "Tasks";
-    
-    //@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
-    @GetMapping("/all")
-    public ResponseEntity<?> getAll( HttpServletRequest req )
-    {
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
+    @GetMapping
+    public ResponseEntity<?> getAll( HttpServletRequest req ){
         ResponseLocal response = new ResponseLocal( logService );
-        /*
-        Object permission = permissionService.validate( req, this.module, "getAll" );
-        if( UtilsPermissionService.haveHttpStatus( permission ) ){
-            return new ResponseEntity<>( permission, permission.httpStatus );
-        } */
-        
         try {
-            Object rows = mytasksService.getAll();
+            Object rows = actionService.getAll();
             HttpStatus httpStatus = response.validateService( rows, 
-                "Tareas listadas",
+                "acciones listadas",
                 this.myClassName, 
                 null, 
                 req
             );
             return new ResponseEntity<Object>( response, httpStatus );
         }
-        catch (Exception e) {
+        catch ( Exception e ){
             response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo listar las tareas", 
+                "No se pudo listar las acciones", 
                 e.getMessage(), 
                 UtilsLocal.emptyErrorList(),
                 this.myClassName, 
@@ -62,9 +56,9 @@ public class MytaskController {
             return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         }
     }
-
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping( path = "/{id}")
     public ResponseEntity<?> getById(
         @PathVariable("id") Integer id,
@@ -73,9 +67,9 @@ public class MytaskController {
     {
         ResponseLocal response = new ResponseLocal( logService );
         try {
-            Object row = this.mytasksService.getById(id);
+            Object row = this.actionService.getById(id);
             HttpStatus httpStatus = response.validateService( row, 
-                "Tarea obtenida",
+                "acción obtenida",
                 this.myClassName, 
                 null, 
                 req
@@ -84,86 +78,11 @@ public class MytaskController {
         }
         catch (Exception e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo obtener la tarea", 
+                "No se pudo obtener la acción", 
                 e.getMessage(), 
                 UtilsLocal.emptyErrorList(),
                 this.myClassName, 
                 null, 
-                req
-            );
-            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
-        }
-    }
-    
-
-    @PreAuthorize("hasRole('ROLE_USUARIO')")
-    @GetMapping("/query-name")
-    public ResponseEntity<?> getByName(
-        @RequestParam("name") String name,
-        HttpServletRequest req
-    )
-    {
-        ResponseLocal response = new ResponseLocal( logService );
-        try {
-            Object row = this.mytasksService.getByName(name);
-            HttpStatus httpStatus = response.validateService( row, 
-                "Tarea obtenida",
-                this.myClassName, 
-                null, 
-                req
-            );
-            return new ResponseEntity<Object>( response, HttpStatus.OK );
-        }
-        catch (Exception e) {
-            response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo obtener la tarea", 
-                e.getMessage(), 
-                UtilsLocal.emptyErrorList(),
-                this.myClassName, 
-                null, 
-                req
-            );
-            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
-        }
-    }
-    
-    
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO')")
-    @PostMapping("/save")
-    public ResponseEntity<?> save(
-        @Valid @RequestBody MytaskDto mytasksDto,
-        BindingResult bindingResult, 
-        HttpServletRequest req
-    )
-    {
-        ResponseLocal response = new ResponseLocal( logService );
-        
-        if( bindingResult.hasErrors() ){
-            response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
-                bindingResult.getAllErrors(),
-                this.myClassName, 
-                mytasksDto.toString(), 
-                req
-            );
-            return new ResponseEntity<Object>( response, HttpStatus.BAD_REQUEST );
-        }
-        try {
-            Object row = this.mytasksService.save(mytasksDto);
-            HttpStatus httpStatus = response.validateService( row, 
-                "Tarea guardada correctamente",
-                this.myClassName, 
-                mytasksDto.toString(), 
-                req
-            );
-            return new ResponseEntity<>( response, httpStatus );
-        }
-        catch (Exception e) {
-            response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo guardar la tarea", 
-                e.getMessage(), 
-                UtilsLocal.emptyErrorList(),
-                this.myClassName, 
-                mytasksDto.toString(), 
                 req
             );
             return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
@@ -172,7 +91,80 @@ public class MytaskController {
 
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping( path = "/del/{id}")
+    @GetMapping("/query")
+    public ResponseEntity<?> getByName(
+        @RequestParam("name") String name,
+        HttpServletRequest req
+    )
+    {
+        ResponseLocal response = new ResponseLocal( logService );
+        try {
+            Object row = this.actionService.getByName(name);
+            HttpStatus httpStatus = response.validateService( row, 
+                "Acción obtenida",
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<Object>( response, HttpStatus.OK );
+        }
+        catch (Exception e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo obtener la acción", 
+                e.getMessage(), 
+                UtilsLocal.emptyErrorList(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
+    }
+    
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping()
+    public ResponseEntity<?> save(
+        @Valid @RequestBody ActionDto actionDto,
+        BindingResult bindingResult, 
+        HttpServletRequest req
+    ){
+        ResponseLocal response = new ResponseLocal( logService );
+        if( bindingResult.hasErrors() ){
+            response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
+                bindingResult.getAllErrors(),
+                this.myClassName, 
+                actionDto.toString(), 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
+        try {
+            Object row = this.actionService.save(actionDto);
+            HttpStatus httpStatus = response.validateService( row, 
+                "Acción guardada correctamente",
+                this.myClassName, 
+                actionDto.toString(), 
+                req
+            );
+            return new ResponseEntity<Object>( response, httpStatus );
+        }
+        catch ( Exception e ){
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo guardar la acción", 
+                e.getMessage(), 
+                UtilsLocal.emptyErrorList(),
+                this.myClassName, 
+                actionDto.toString(), 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
+    }
+
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping( path = "/{id}")
     public ResponseEntity<?> delete(
         @PathVariable("id") Integer id,
         HttpServletRequest req
@@ -181,7 +173,7 @@ public class MytaskController {
         ResponseLocal response = new ResponseLocal( logService );
         try {
             String message = "";
-            Object resDel = this.mytasksService.delete(id);
+            Object resDel = this.actionService.delete(id);
             if( ! UtilsService.isErrorService(resDel) ){ 
                 message = (String) resDel;
                 resDel = null;
@@ -195,9 +187,20 @@ public class MytaskController {
             );
             return new ResponseEntity<>( response, httpStatus );
         }
+        catch ( DataAccessException e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo eliminar la acción.", 
+                e.getMessage(), 
+                UtilsLocal.emptyErrorList(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
         catch (Exception e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo eliminar la tarea", 
+                "No se pudo eliminar la acción", 
                 e.getMessage(), 
                 UtilsLocal.emptyErrorList(),
                 this.myClassName, 
@@ -207,4 +210,5 @@ public class MytaskController {
             return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         } 
     }
+    
 }
