@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +33,7 @@ public class MytaskController {
     
     private final String module = "Tasks";
     
-    //@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
+
     @GetMapping("/all")
     public ResponseEntity<?> getAll( HttpServletRequest req )
     {
@@ -66,7 +65,6 @@ public class MytaskController {
     }
 
     
-    //@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
     @GetMapping( path = "/{id}")
     public ResponseEntity<?> getById(
         @PathVariable("id") Integer id,
@@ -100,7 +98,6 @@ public class MytaskController {
     }
     
 
-    //@PreAuthorize("hasRole('ROLE_USUARIO')")
     @GetMapping("/query-name")
     public ResponseEntity<?> getByName(
         @RequestParam("name") String name,
@@ -134,7 +131,6 @@ public class MytaskController {
     }
     
     
-    //@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO')")
     @PostMapping("/save")
     public ResponseEntity<?> save(
         @Valid @RequestBody MytaskDto mytasksDto,
@@ -179,7 +175,6 @@ public class MytaskController {
     }
 
     
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping( path = "/del/{id}")
     public ResponseEntity<?> delete(
         @PathVariable("id") Integer id,

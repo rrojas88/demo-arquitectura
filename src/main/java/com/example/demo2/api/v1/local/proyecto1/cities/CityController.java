@@ -7,13 +7,13 @@ import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.proyecto1.cities.adapters.CityDto;
 
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
+import com.example.demo2.api.v1.local.proyecto1.permissions.PermissionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +24,24 @@ public class CityController {
     
     @Autowired
     CityService cityService;
+    
     @Autowired
     LogService logService;
     
+    @Autowired
+    PermissionService permissionService;
+    
     private String myClassName = CityController.class.getName();
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
+    private final String module = "Cities";
+    
+
     @GetMapping
     public ResponseEntity<?> getAll( HttpServletRequest req ){
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getAll", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object rows = cityService.getAll();
             HttpStatus httpStatus = response.validateService( rows, 
@@ -57,7 +66,6 @@ public class CityController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping( path = "/{id}")
     public ResponseEntity<?> getById(
         @PathVariable("id") Integer id,
@@ -65,6 +73,9 @@ public class CityController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object row = this.cityService.getById(id);
             HttpStatus httpStatus = response.validateService( row, 
@@ -89,7 +100,6 @@ public class CityController {
     }
 
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/query")
     public ResponseEntity<?> getByName(
         @RequestParam("name") String name,
@@ -97,6 +107,9 @@ public class CityController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object row = this.cityService.getByName(name);
             HttpStatus httpStatus = response.validateService( row, 
@@ -121,7 +134,6 @@ public class CityController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
     public ResponseEntity<?> save(
         @Valid @RequestBody CityDto cityDto,
@@ -129,6 +141,9 @@ public class CityController {
         HttpServletRequest req
     ){
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "save", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         if( bindingResult.hasErrors() ){
             response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
                 bindingResult.getAllErrors(),
@@ -162,7 +177,6 @@ public class CityController {
     }
 
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping( path = "/{id}")
     public ResponseEntity<?> delete(
         @PathVariable("id") Integer id,
@@ -170,6 +184,8 @@ public class CityController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "delete", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         try {
             String message = "";
             Object resDel = this.cityService.delete(id);

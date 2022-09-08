@@ -7,6 +7,7 @@ import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.proyecto1.categories.adapters.CategoryDto;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
+import com.example.demo2.api.v1.local.proyecto1.permissions.PermissionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,20 +25,29 @@ public class CategoryController {
     
     @Autowired
     CategoryService categoryService;
+    
     @Autowired
     LogService logService;
     
+    @Autowired
+    PermissionService permissionService;
+    
     private String myClassName = CategoryController.class.getName();
+    
+    private final String module = "Categories";
     
     // Primer num es cant de Mb permitidas
     private int limitSize = 2 * 1024 * 1024;
     // Extensiones permitidas
     private String[] extensions = {"jpg","jpeg","png"};
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
+    
     @GetMapping
     public ResponseEntity<?> getAll( HttpServletRequest req ){
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getAll", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object rows = categoryService.getAll();
             HttpStatus httpStatus = response.validateService( rows, 
@@ -63,7 +72,6 @@ public class CategoryController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping( path = "/{id}")
     public ResponseEntity<?> getById(
         @PathVariable("id") Integer id,
@@ -71,6 +79,9 @@ public class CategoryController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object row = this.categoryService.getById(id);
             HttpStatus httpStatus = response.validateService( row, 
@@ -95,7 +106,6 @@ public class CategoryController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/query")
     public ResponseEntity<?> getByName(
         @RequestParam("name") String name,
@@ -103,6 +113,9 @@ public class CategoryController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object row = this.categoryService.getByName(name);
             HttpStatus httpStatus = response.validateService( row, 
@@ -127,7 +140,6 @@ public class CategoryController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(
         @Valid @ModelAttribute CategoryDto categoryDto,
@@ -137,6 +149,8 @@ public class CategoryController {
         System.out.println("\n... ... Pasa => 1 ");
         String message = "";
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "save", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         
         if( categoryDto.getFile() == null || categoryDto.getFile().isEmpty() )
             message = "La imagen es Obligatoria";
@@ -195,7 +209,6 @@ public class CategoryController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping( path = "/{id}")
     public ResponseEntity<?> delete(
         @PathVariable("id") Integer id,
@@ -203,6 +216,9 @@ public class CategoryController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "delete", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             String message = "";
             Object resDel = this.categoryService.delete(id);

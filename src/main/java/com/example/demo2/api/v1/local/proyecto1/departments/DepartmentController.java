@@ -6,13 +6,12 @@ import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.proyecto1.departments.adapters.DepartmentDto;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
+import com.example.demo2.api.v1.local.proyecto1.permissions.PermissionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,17 +22,25 @@ public class DepartmentController {
     
     @Autowired
     DepartmentService departmentService;
+    
     @Autowired
     LogService logService;
     
+    @Autowired
+    PermissionService permissionService;
+    
     private String myClassName = DepartmentController.class.getName();
     
+    private final String module = "Departments";
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
+    
     @GetMapping
     public ResponseEntity<?> getAll( HttpServletRequest req )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getAll", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object rows = departmentService.getAll();
             HttpStatus httpStatus = response.validateService( rows, 
@@ -58,7 +65,6 @@ public class DepartmentController {
     }
 
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
     @GetMapping( path = "/{id}")
     public ResponseEntity<?> getById(
         @PathVariable("id") Integer id,
@@ -66,6 +72,9 @@ public class DepartmentController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object row = this.departmentService.getById(id);
             HttpStatus httpStatus = response.validateService( row, 
@@ -90,7 +99,6 @@ public class DepartmentController {
     }
     
 
-    @PreAuthorize("hasRole('ROLE_USUARIO')")
     @GetMapping("/query")
     public ResponseEntity<?> getByName(
         @RequestParam("name") String name,
@@ -98,6 +106,9 @@ public class DepartmentController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             Object row = this.departmentService.getByName(name);
             HttpStatus httpStatus = response.validateService( row, 
@@ -122,7 +133,6 @@ public class DepartmentController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO')")
     @PostMapping()
     public ResponseEntity<?> save( 
         @Valid @RequestBody DepartmentDto deptoDto,
@@ -131,6 +141,8 @@ public class DepartmentController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "save", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         
         if( bindingResult.hasErrors() ){
             response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
@@ -164,8 +176,7 @@ public class DepartmentController {
         }
     }
 
-    
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @DeleteMapping( path = "/{id}")
     public ResponseEntity<?> delete(
         @PathVariable("id") Integer id,
@@ -173,6 +184,9 @@ public class DepartmentController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "delete", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
         try {
             String message = "";
             Object resDel = this.departmentService.delete(id);
@@ -188,28 +202,6 @@ public class DepartmentController {
                 req
             );
             return new ResponseEntity<>( response, httpStatus );
-        } /*
-        catch ( SQLException e) {
-            response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo eliminar el Departamento", 
-                e.getMessage(), 
-                UtilsLocal.emptyErrorList(),
-                this.myClassName, 
-                null, 
-                req
-            );
-            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
-        } */
-        catch ( DataAccessException e) {
-            response.setError( HttpStatus.BAD_REQUEST.value(), 
-                "No se pudo eliminar el Departamento.", 
-                e.getMessage(), 
-                UtilsLocal.emptyErrorList(),
-                this.myClassName, 
-                null, 
-                req
-            );
-            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
         }
         catch (Exception e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 
