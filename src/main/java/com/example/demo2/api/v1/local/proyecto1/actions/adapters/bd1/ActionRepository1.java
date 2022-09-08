@@ -17,4 +17,8 @@ public interface ActionRepository1 extends JpaRepository<Action1, Integer>{
     @Query(value="SELECT a.* FROM actions a WHERE a.module_id = :module_id ", nativeQuery=true )
     ArrayList<Action1> findAllByModuleId( Integer module_id );
     
+    @Transactional
+    @Query(value="SELECT a.* FROM actions a WHERE a.module_id = :module_id AND a.code = :code ", nativeQuery=true )
+    ArrayList<Action1> findAllByModuleIdAndCode( Integer module_id, String code );
+    
 }

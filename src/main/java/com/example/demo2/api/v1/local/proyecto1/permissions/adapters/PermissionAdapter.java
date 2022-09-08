@@ -44,11 +44,11 @@ public class PermissionAdapter {
             );
         }
     }
-/*
+
     public Object getByAction_id(Integer action_id) {
         try {
-            return permissionRepository.findByAction_id(action_id);
-        } catch (Exception e) {
+            return permissionRepository.findAllByActionId(action_id);
+        } catch (Exception e) {System.out.println("\n*  *  * Error PermissionAdapter:"); System.out.println(e.getMessage());
             return new ErrorService(
                 "No se obtuvo el permiso",
                 e.getMessage(),
@@ -56,7 +56,7 @@ public class PermissionAdapter {
             );
         }
     }
-    
+    /*
     public Object getByRol_id(Integer rol_id) {
         try {
             return permissionRepository.findByRol_id(rol_id);

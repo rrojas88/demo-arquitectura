@@ -6,6 +6,7 @@ import com.example.demo2.api.v1.local.Utils.UtilsLocal;
 import com.example.demo2.api.v1.local.Utils.UtilsService;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
 import com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.MytaskDto;
+import com.example.demo2.api.v1.local.proyecto1.permissions.PermissionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,12 @@ public class MytaskController {
     
     @Autowired
     MytaskService mytasksService;
+    
     @Autowired
     LogService logService;
+    
+    @Autowired
+    PermissionService permissionService;
     
     private String myClassName = MytaskController.class.getName();
     
@@ -34,11 +39,8 @@ public class MytaskController {
     public ResponseEntity<?> getAll( HttpServletRequest req )
     {
         ResponseLocal response = new ResponseLocal( logService );
-        /*
-        Object permission = permissionService.validate( req, this.module, "getAll" );
-        if( UtilsPermissionService.haveHttpStatus( permission ) ){
-            return new ResponseEntity<>( permission, permission.httpStatus );
-        } */
+        Object permission = permissionService.validate( req, this.module, "getAll", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         
         try {
             Object rows = mytasksService.getAll();
@@ -64,7 +66,7 @@ public class MytaskController {
     }
 
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO') OR hasRole('ROLE_LECTURA')")
     @GetMapping( path = "/{id}")
     public ResponseEntity<?> getById(
         @PathVariable("id") Integer id,
@@ -72,6 +74,8 @@ public class MytaskController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         try {
             Object row = this.mytasksService.getById(id);
             HttpStatus httpStatus = response.validateService( row, 
@@ -96,7 +100,7 @@ public class MytaskController {
     }
     
 
-    @PreAuthorize("hasRole('ROLE_USUARIO')")
+    //@PreAuthorize("hasRole('ROLE_USUARIO')")
     @GetMapping("/query-name")
     public ResponseEntity<?> getByName(
         @RequestParam("name") String name,
@@ -104,6 +108,8 @@ public class MytaskController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "getOne", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         try {
             Object row = this.mytasksService.getByName(name);
             HttpStatus httpStatus = response.validateService( row, 
@@ -128,7 +134,7 @@ public class MytaskController {
     }
     
     
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USUARIO')")
     @PostMapping("/save")
     public ResponseEntity<?> save(
         @Valid @RequestBody MytaskDto mytasksDto,
@@ -137,6 +143,8 @@ public class MytaskController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "save", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         
         if( bindingResult.hasErrors() ){
             response.setError( HttpStatus.BAD_REQUEST.value(), "", "", 
@@ -171,7 +179,7 @@ public class MytaskController {
     }
 
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping( path = "/del/{id}")
     public ResponseEntity<?> delete(
         @PathVariable("id") Integer id,
@@ -179,6 +187,8 @@ public class MytaskController {
     )
     {
         ResponseLocal response = new ResponseLocal( logService );
+        Object permission = permissionService.validate( req, this.module, "delete", response );
+        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         try {
             String message = "";
             Object resDel = this.mytasksService.delete(id);

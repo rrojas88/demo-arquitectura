@@ -3,9 +3,9 @@ package com.example.demo2.api.v1.local.proyecto1.roles;
 
 
 import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolAdapter;
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
+//import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
 import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol1;
-import java.util.Optional;
+//import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +19,8 @@ public class RolService {
     RolAdapter rolAdapter;
     
     //public Optional<Rol1> getByName( RolName name ){
-    public Object getByName( RolName name ){
-
+    //public Object getByName( RolName name ){ // Estes
+    public Object getByName( String name ){
         return rolAdapter.getByName(name);
     }
     

@@ -4,7 +4,7 @@ package com.example.demo2.api.v1.local.proyecto1.roles.adapters;
 import com.example.demo2.api.v1.local.Utils.ErrorService;
 import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol1;
 import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.RolRepository1;
-import java.util.Optional;
+//import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,15 @@ public class RolAdapter {
     
     private String myClassName = RolAdapter.class.getName();
     
-    public Object getByName(RolName name) {
     //public Optional<Rol1> getByName(RolName name) {
-
+    //public Object getByName(RolName name) { // Este
+    public Object getByName(String name) {
         try {
             return rolRepository.findByName(name);
         }
         catch (Exception e) {
             return new ErrorService(
-                "No se obtuvo la Ciudad", 
+                "No se obtuvo el rol", 
                 e.getMessage(), 
                 this.myClassName
             );
@@ -37,7 +37,7 @@ public class RolAdapter {
         }
         catch (Exception e) {
             return new ErrorService(
-                "No se pudo guardar la Ciudad", 
+                "No se pudo guardar el rol", 
                 e.getMessage(), 
                 this.myClassName
             );

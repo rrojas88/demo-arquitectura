@@ -59,9 +59,22 @@ public class ActionAdapter {
         }
     }
     
-    public Object getByModulet_id(Integer module_id){
+    public Object getByModule_id(Integer module_id){
         try {
             return actionRepository.findAllByModuleId(module_id);
+        }
+        catch (Exception e) {
+            return new ErrorService(
+                "No se obtuvieron acciones.", 
+                e.getMessage(), 
+                this.myClassName
+            );
+        }
+    }
+    
+    public Object getByModule_idAndCode(Integer module_id, String code){
+        try {
+            return actionRepository.findAllByModuleIdAndCode(module_id, code);
         }
         catch (Exception e) {
             return new ErrorService(

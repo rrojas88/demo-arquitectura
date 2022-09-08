@@ -42,7 +42,8 @@ public class UserRolesPrincipal implements UserDetails {
     public static UserRolesPrincipal build ( User1 user ){
         List<GrantedAuthority> authorities = user.getRoles()
             .stream()
-            .map( rol -> new SimpleGrantedAuthority (rol.getName().name() ))
+            //.map( rol -> new SimpleGrantedAuthority (rol.getName().name() )) //Este
+            .map( rol -> new SimpleGrantedAuthority ( rol.getName() ))
             .collect( Collectors.toList() );
         
         return new UserRolesPrincipal( 

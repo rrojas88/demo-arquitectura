@@ -17,16 +17,17 @@ public class Rol1 extends Rol {
     private Integer id;
     
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private RolName name;
-    //private String name;
+    //@Enumerated(EnumType.STRING) //Este
+    //private RolName name; //Este
+    private String name;
     //private Byte active;
     private boolean active;
     
     public Rol1(){
     }
 
-    public Rol1(@NotNull RolName name) {
+    //public Rol1(@NotNull RolName name) {
+    public Rol1(@NotNull String name) {
         this.name = name;
         //this.active = 1;
         this.active = true;
@@ -40,11 +41,13 @@ public class Rol1 extends Rol {
         this.id = id;
     }
 
-    public RolName getName() {
+    //public RolName getName() { // Este
+    public String getName() {
         return name;
     }
 
-    public void setName(RolName name) {
+    //public void setName(RolName name) {
+    public void setName(String name) {
         this.name = name;
     }
 

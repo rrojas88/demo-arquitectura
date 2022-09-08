@@ -57,7 +57,20 @@ public class ActionService {
     
     public Object getByModule_id(Integer module_id){
         try {
-            return actionAdapter.getByModulet_id(module_id);
+            return actionAdapter.getByModule_id(module_id);
+        }
+        catch (Exception e) {
+            return new ErrorService(
+                "No se obtuvieron acciones", 
+                e.getMessage(), 
+                this.myClassName
+            );
+        }
+    }
+    
+    public Object getByModule_idAndCode(Integer module_id, String code){
+        try {
+            return actionAdapter.getByModule_idAndCode(module_id, code);
         }
         catch (Exception e) {
             return new ErrorService(

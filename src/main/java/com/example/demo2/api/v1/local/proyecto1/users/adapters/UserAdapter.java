@@ -138,18 +138,21 @@ public class UserAdapter {
             // Establecer Roles del Usuario
             Set<Rol1> roles = new HashSet<>();
             //roles.add(rolService.getByName(RolName.ROLE_LECTURA).get());
-            Rol1 role_ = (Rol1)rolService.getByName(RolName.ROLE_LECTURA);
+            //Rol1 role_ = (Rol1)rolService.getByName(RolName.ROLE_LECTURA); // Este
+            Rol1 role_ = (Rol1)rolService.getByName("ROLE_LECTURA");
             roles.add(role_);
             
             if( userDto.getRoles().contains("Usuario") || userDto.getRoles().contains("Usuario normal") ){
                 //roles.add( rolService.getByName(RolName.ROLE_USUARIO).get() );
-                Rol1 role2_ = (Rol1)rolService.getByName(RolName.ROLE_USUARIO);
-            roles.add(role2_);
+                //Rol1 role2_ = (Rol1)rolService.getByName(RolName.ROLE_USUARIO); // Este
+                Rol1 role2_ = (Rol1)rolService.getByName("ROLE_USUARIO");
+                roles.add(role2_);
             }
             if( userDto.getRoles().contains("Admin") || userDto.getRoles().contains("Administrador") ){
                 //roles.add( rolService.getByName(RolName.ROLE_ADMIN).get() );
-                Rol1 role3_ = (Rol1)rolService.getByName(RolName.ROLE_ADMIN);
-            roles.add(role3_);
+                //Rol1 role3_ = (Rol1)rolService.getByName(RolName.ROLE_ADMIN); // Este
+                Rol1 role3_ = (Rol1)rolService.getByName("ROLE_ADMIN");
+                roles.add(role3_);
             }
             user.setRoles(roles);
             
