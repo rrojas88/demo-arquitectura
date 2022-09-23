@@ -97,7 +97,7 @@ public class UserService {
     {
         try{
             Object row = userAdapter.save(userDto);
-            return null;
+            return row;
         }
         catch (Exception e) {
             return new ErrorService(

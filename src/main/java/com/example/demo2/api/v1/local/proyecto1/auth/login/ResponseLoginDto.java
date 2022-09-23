@@ -12,17 +12,20 @@ public class ResponseLoginDto {
     private String bearer = "Bearer";
     private String email;
     private String name;
+    private String extra;
     private Collection<? extends GrantedAuthority> authorities;
 
     public ResponseLoginDto(
         String token, 
         String email, 
         String name, 
+         String extra,
         Collection<? extends GrantedAuthority> authorities
     ) {
         this.token = token;
         this.email = email;
         this.name = name;
+        this.extra = extra;
         this.authorities = authorities;
     }
 
@@ -66,5 +69,12 @@ public class ResponseLoginDto {
         this.authorities = authorities;
     }
     
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
     
 }

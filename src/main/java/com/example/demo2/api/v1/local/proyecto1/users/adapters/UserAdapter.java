@@ -3,7 +3,7 @@ package com.example.demo2.api.v1.local.proyecto1.users.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
 import com.example.demo2.api.v1.local.proyecto1.roles.RolService;
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
+//import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
 import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol1;
 import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.User1;
 import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.UserRepository1;
@@ -137,22 +137,16 @@ public class UserAdapter {
             
             // Establecer Roles del Usuario
             Set<Rol1> roles = new HashSet<>();
-            //roles.add(rolService.getByName(RolName.ROLE_LECTURA).get());
-            //Rol1 role_ = (Rol1)rolService.getByName(RolName.ROLE_LECTURA); // Este
-            Rol1 role_ = (Rol1)rolService.getByName("ROLE_LECTURA");
-            roles.add(role_);
+            Optional<Rol1> role_ = (Optional<Rol1>)rolService.getByName("ROLE_LECTURA");
+            roles.add( role_.get() );
             
             if( userDto.getRoles().contains("Usuario") || userDto.getRoles().contains("Usuario normal") ){
-                //roles.add( rolService.getByName(RolName.ROLE_USUARIO).get() );
-                //Rol1 role2_ = (Rol1)rolService.getByName(RolName.ROLE_USUARIO); // Este
-                Rol1 role2_ = (Rol1)rolService.getByName("ROLE_USUARIO");
-                roles.add(role2_);
+                Optional<Rol1> role2_ = (Optional<Rol1>)rolService.getByName("ROLE_USUARIO");
+                roles.add( role2_.get() );
             }
             if( userDto.getRoles().contains("Admin") || userDto.getRoles().contains("Administrador") ){
-                //roles.add( rolService.getByName(RolName.ROLE_ADMIN).get() );
-                //Rol1 role3_ = (Rol1)rolService.getByName(RolName.ROLE_ADMIN); // Este
-                Rol1 role3_ = (Rol1)rolService.getByName("ROLE_ADMIN");
-                roles.add(role3_);
+                Optional<Rol1> role3_ = (Optional<Rol1>)rolService.getByName("ROLE_ADMIN");
+                roles.add( role3_.get() );
             }
             user.setRoles(roles);
             
@@ -169,7 +163,7 @@ public class UserAdapter {
         }
         catch (Exception e) {
             ErrorService errService = new ErrorService(
-                "No se pudo guardar el usuario", 
+                "No se pudo guardar el usuario.", 
                 e.getMessage(), 
                 this.myClassName
             );

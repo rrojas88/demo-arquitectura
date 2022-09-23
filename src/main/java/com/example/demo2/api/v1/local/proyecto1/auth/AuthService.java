@@ -8,6 +8,7 @@ import com.example.demo2.api.v1.local.proyecto1.auth.login.ResponseLoginDto;
 import com.example.demo2.api.v1.local.proyecto1.users.UserService;
 import com.example.demo2.api.v1.local.proyecto1.users.adapters.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,8 @@ public class AuthService {
     
     private String myClassName = AuthService.class.getName();
     
+    @Value("${enviroment.current}")
+    public String  zona_extra;
     
     public Object register( UserDto userDto ){
         try {
@@ -63,6 +66,7 @@ public class AuthService {
                 jwt,
                 authUserRoles.getEmail(),
                 authUserRoles.getUsername(), 
+                zona_extra,
                 authUserRoles.getAuthorities()
             );
             return responseLoginDto;
