@@ -9,12 +9,12 @@ import com.example.demo2.api.v1.local.proyecto1.actions.ActionService;
 import com.example.demo2.api.v1.local.proyecto1.actions.adapters.bd1.Action1;
 import com.example.demo2.api.v1.local.proyecto1.auth.UserRolesPrincipal;
 import com.example.demo2.api.v1.local.proyecto1.modules.ModuleService;
-import com.example.demo2.api.v1.local.proyecto1.modules.adapters.bd1.Module1;
+import com.example.demo2.api.v1.local.proyecto1.modules.adapters.bd1.Module;
 import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.PermissionAdapter;
 import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.PermissionDto;
-import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.bd1.Permission1;
+import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.bd1.Permission;
 import com.example.demo2.api.v1.local.proyecto1.roles.RolService;
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol1;
+import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -76,7 +76,7 @@ public class PermissionService {
                     this.myClassName, "Modulo="+module_code+", Accion="+action_code, req);
                 return response;
             }
-            Integer module_id =  ( (Module1) ((ArrayList)mod).get(0) ).getId(); 
+            Integer module_id =  ( (Module) ((ArrayList)mod).get(0) ).getId(); 
             
             Object act = actionService.getByModule_idAndCode(module_id, action_code);
             System.out.println("\n*  *  * Permiso-Action:"); System.out.println(act);
@@ -107,13 +107,13 @@ public class PermissionService {
             for( int i=0; i < user_roles.length; i++ ){
                 if( ! exitsRolOk )
                 {
-                    Optional<Rol1> rolOptional = ( Optional<Rol1> ) rolService.getByName(user_roles[ i ].toString());
+                    Optional<Rol> rolOptional = ( Optional<Rol> ) rolService.getByName(user_roles[ i ].toString());
                     if( rolOptional.isPresent() )
                     {
-                        Rol1 rol = rolOptional.get();
+                        Rol rol = rolOptional.get();
                         Integer rolId = rol.getId();
                         for( int j=0; j < action_roles.size(); j++ ){
-                            Permission1 perm = (Permission1) action_roles.get( j );
+                            Permission perm = (Permission) action_roles.get( j );
                             System.out.println( rolId + " == " + perm.getRol_id() );
                             if( rolId == perm.getRol_id() ){
                                 exitsRolOk = true;

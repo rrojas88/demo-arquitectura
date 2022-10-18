@@ -2,18 +2,18 @@
 package com.example.demo2.api.v1.local.proyecto1.mytasks.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.bd2.Mytask2;
+import com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.bd2.Mytask;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.bd2.MytaskRepository2;
+import com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.bd2.MytaskRepository;
 
 
 @Service
 public class MytaskAdapter {
 
     @Autowired
-    MytaskRepository2 mytasksRepository;
+    MytaskRepository mytasksRepository;
     
 
     private String myClassName = MytaskAdapter.class.getName();
@@ -32,7 +32,7 @@ public class MytaskAdapter {
 
     public Object getById(Integer id) {
         try {
-            Optional<Mytask2> rowOptional = mytasksRepository.findById(id);
+            Optional<Mytask> rowOptional = mytasksRepository.findById(id);
             if (!rowOptional.isPresent() || rowOptional.isEmpty()) {
                 return new ErrorService(id.toString(), "", this.myClassName, 404);
             }
@@ -60,7 +60,7 @@ public class MytaskAdapter {
 
     public Object save(MytaskDto mytasksDto) {
         try {
-            Mytask2 mytask = new Mytask2();
+            Mytask mytask = new Mytask();
             if( mytasksDto.getId() != null ){
                 mytask.setId( mytasksDto.getId() );
                 mytask.setName( mytasksDto.getName() );
@@ -81,7 +81,7 @@ public class MytaskAdapter {
 
     public Object delete(Integer id) {
         try {
-            Optional<Mytask2> row = mytasksRepository.findById(id);
+            Optional<Mytask> row = mytasksRepository.findById(id);
             if( ! row.isEmpty() ){
                 mytasksRepository.deleteById(id);
                 return "Se eliminó el registro con ID: " + id;

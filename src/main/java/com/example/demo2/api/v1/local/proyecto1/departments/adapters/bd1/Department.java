@@ -1,12 +1,11 @@
 
 package com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1;
 
-import com.example.demo2.api.v1.local.proyecto1.departments.adapters.Department;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "departments")
-public class Department1 extends Department {
+public class Department  {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -20,12 +19,12 @@ public class Department1 extends Department {
     //private Byte active;
     private boolean active;
 
-    public Department1() {
+    public Department() {
         //this.active = 1;
         this.active = true;
     }
 
-    public Department1(String code, String name ) {
+    public Department(String code, String name ) {
         this.code = code;
         this.name = name;
         //this.active = 1;
@@ -33,7 +32,7 @@ public class Department1 extends Department {
     }
     
     //public Department(Integer id, String code, String name, Byte active) {
-    public Department1(Integer id, String code, String name, boolean active) {
+    public Department(Integer id, String code, String name, boolean active) {
         this.id = id;
         this.code = code;
         this.name = name;

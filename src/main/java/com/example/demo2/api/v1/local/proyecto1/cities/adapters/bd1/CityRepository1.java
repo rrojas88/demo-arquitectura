@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
-public interface CityRepository1 extends JpaRepository<City1, Integer>{
+public interface CityRepository1 extends JpaRepository<City, Integer>{
     
-    public abstract ArrayList<City1> findByName(String name);
+    public abstract ArrayList<City> findByName(String name);
     
     @Transactional
     @Query(value="SELECT c.* FROM cities c WHERE c.department_id = :department_id ", nativeQuery=true )
-    ArrayList<City1> findAllByDepartmentId( Integer department_id );
+    ArrayList<City> findAllByDepartmentId( Integer department_id );
     
 }

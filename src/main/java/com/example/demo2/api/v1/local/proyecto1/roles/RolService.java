@@ -4,7 +4,7 @@ package com.example.demo2.api.v1.local.proyecto1.roles;
 
 import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolAdapter;
 //import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol1;
+import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol;
 //import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class RolService {
         return rolAdapter.getByName(name);
     }
     
-    public void save(Rol1 rol){
+    public void save(Rol rol){
         rolAdapter.save(rol);
     }
     

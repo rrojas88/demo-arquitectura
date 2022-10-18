@@ -3,18 +3,18 @@ package com.example.demo2.api.v1.local.proyecto1.departments.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
 import com.example.demo2.api.v1.local.proyecto1.cities.CityService;
-import com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1.Department1;
-import com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1.DepartmentRepository1;
+import com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1.Department;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo2.api.v1.local.proyecto1.departments.adapters.bd1.DepartmentRepository;
 
 
 @Service
 public class DepartmentAdapter {
 
     @Autowired
-    DepartmentRepository1 departmentRepository;
+    DepartmentRepository departmentRepository;
     
     @Autowired
     CityService cityService;
@@ -35,7 +35,7 @@ public class DepartmentAdapter {
 
     public Object getById(Integer id) {
         try {
-            Optional<Department1> rowOptional = departmentRepository.findById(id);
+            Optional<Department> rowOptional = departmentRepository.findById(id);
             if (!rowOptional.isPresent() || rowOptional.isEmpty()) {
                 return new ErrorService(id.toString(), "", this.myClassName, 404);
             }
@@ -75,7 +75,7 @@ public class DepartmentAdapter {
 
     public Object save(DepartmentDto deptoDto) {
         try {
-            Department1 depto = new Department1();
+            Department depto = new Department();
             if( deptoDto.getId() != null ){
                 depto.setId( deptoDto.getId() );
                 depto.setCode( deptoDto.getCode() );
@@ -98,7 +98,7 @@ public class DepartmentAdapter {
 
     public Object delete(Integer id) {
         try {
-            Optional<Department1> row = departmentRepository.findById(id);
+            Optional<Department> row = departmentRepository.findById(id);
             if (!row.isEmpty()) {
                 departmentRepository.deleteById(id);
                 return "Se eliminó el registro con ID: " + id;

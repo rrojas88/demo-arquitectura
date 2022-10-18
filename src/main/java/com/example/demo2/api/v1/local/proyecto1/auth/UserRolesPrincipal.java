@@ -1,7 +1,7 @@
 
 package com.example.demo2.api.v1.local.proyecto1.auth;
 
-import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.User1;
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,7 +39,7 @@ public class UserRolesPrincipal implements UserDetails {
     }
     
     // Define permisos/provilegios del Usuario (Autenticacion)
-    public static UserRolesPrincipal build ( User1 user ){
+    public static UserRolesPrincipal build ( User user ){
         List<GrantedAuthority> authorities = user.getRoles()
             .stream()
             //.map( rol -> new SimpleGrantedAuthority (rol.getName().name() )) //Este

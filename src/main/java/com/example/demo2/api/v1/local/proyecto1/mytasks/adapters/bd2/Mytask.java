@@ -1,12 +1,11 @@
 
 package com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.bd2;
 
-import com.example.demo2.api.v1.local.proyecto1.mytasks.adapters.Mytask;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "mytasks")
-public class Mytask2 extends Mytask {
+public class Mytask {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -18,18 +17,18 @@ public class Mytask2 extends Mytask {
     private Byte active;
     //private boolean active;
 
-    public Mytask2() {
+    public Mytask() {
         this.active = 1;
         //this.active = true;
     }
 
-    public Mytask2( String name ) {
+    public Mytask( String name ) {
         this.name = name;
         this.active = 1;
         //this.active = true;
     }
     
-    public Mytask2(Integer id, String name, Byte active) {
+    public Mytask(Integer id, String name, Byte active) {
     //public Mytasks2(Integer id, String code, String name, boolean active) {
         this.id = id;
         this.name = name;

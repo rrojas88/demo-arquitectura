@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface ModuleRepository1 extends JpaRepository<Module1, Integer>{
+public interface ModuleRepository extends JpaRepository<Module, Integer>{
     
-    public abstract Optional<Module1> findByName(String name);
+    public abstract Optional<Module> findByName(String name);
     
-    public abstract ArrayList<Module1> findByCode(String code);
+    public abstract ArrayList<Module> findByCode(String code);
     
-    public abstract Optional<Module1> findById(Integer id);
+    public abstract Optional<Module> findById(Integer id);
 
 }

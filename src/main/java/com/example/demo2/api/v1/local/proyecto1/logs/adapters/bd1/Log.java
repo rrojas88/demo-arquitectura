@@ -1,15 +1,13 @@
 
 package com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1;
 
-import com.example.demo2.api.v1.local.proyecto1.logs.adapters.Log;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "logs")
-public class Log1 extends Log {
+public class Log {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -30,7 +28,7 @@ public class Log1 extends Log {
     private String method;
     private String payload;
     
-    public Log1() {
+    public Log() {
     }
     
     public Long getId() {

@@ -1,8 +1,7 @@
 
 package com.example.demo2.api.v1.local.proyecto1.logs.adapters;
 
-import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.Log1;
-import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.LogRepository1;
+import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.Log;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.DataException;
 import org.hibernate.exception.GenericJDBCException;
@@ -12,15 +11,16 @@ import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.LogRepository;
 
 
 @Service
 public class LogAdapter {
     
     @Autowired
-    LogRepository1 logRepository;
+    LogRepository logRepository;
     
-    public Log1 save( Log1 log ){
+    public Log save( Log log ){
         try {
             System.out.println("======== LOG x2: ");System.out.println(log);
             return logRepository.save(log);
@@ -30,42 +30,42 @@ public class LogAdapter {
             System.out.println(e);System.out.println("--- ---");
             System.out.println(e.getLocalizedMessage());System.out.println("--- ---");
             System.out.println(e.getMessage());
-            return new Log1();
+            return new Log();
         }
         catch ( DataException e) {
             System.out.println("LogAdapter -> DataException");
             System.out.println(e);System.out.println("--- ---");
             System.out.println(e.getLocalizedMessage());System.out.println("--- ---");
             System.out.println(e.getMessage());
-            return new Log1();
+            return new Log();
         }
         catch ( LockAcquisitionException e) {
             System.out.println("LogAdapter -> LockAcquisitionException");
             System.out.println(e);System.out.println("--- ---");
             System.out.println(e.getLocalizedMessage());System.out.println("--- ---");
             System.out.println(e.getMessage());
-            return new Log1();
+            return new Log();
         }
         catch ( JDBCConnectionException e) {
             System.out.println("LogAdapter -> JDBCConnectionException");
             System.out.println(e);System.out.println("--- ---");
             System.out.println(e.getLocalizedMessage());System.out.println("--- ---");
             System.out.println(e.getMessage());
-            return new Log1();
+            return new Log();
         }
         catch ( SQLGrammarException e) {
             System.out.println("LogAdapter -> SQLGrammarException");
             System.out.println(e);System.out.println("--- ---");
             System.out.println(e.getLocalizedMessage());System.out.println("--- ---");
             System.out.println(e.getMessage());
-            return new Log1();
+            return new Log();
         }
         catch ( GenericJDBCException e) {
             System.out.println("LogAdapter -> GenericJDBCException");
             System.out.println(e);System.out.println("--- ---");
             System.out.println(e.getLocalizedMessage());System.out.println("--- ---");
             System.out.println(e.getMessage());
-            return new Log1();
+            return new Log();
         }
         catch ( DataAccessException e) {
             System.out.println("LogAdapter -> DataAccessException");
@@ -78,7 +78,7 @@ public class LogAdapter {
         catch( Exception e ) {
             System.out.println("+++ Error en LogAdapter LOG:");
             System.out.println( e.getMessage() );
-            return new Log1();
+            return new Log();
         }
     }
 }

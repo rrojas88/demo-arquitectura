@@ -2,18 +2,18 @@
 package com.example.demo2.api.v1.local.proyecto1.modules.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.proyecto1.modules.adapters.bd1.Module1;
-import com.example.demo2.api.v1.local.proyecto1.modules.adapters.bd1.ModuleRepository1;
+import com.example.demo2.api.v1.local.proyecto1.modules.adapters.bd1.Module;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo2.api.v1.local.proyecto1.modules.adapters.bd1.ModuleRepository;
 
 
 @Service
 public class ModuleAdapter {
 
     @Autowired
-    ModuleRepository1 moduleRepository;
+    ModuleRepository moduleRepository;
 
     private String myClassName = ModuleAdapter.class.getName();
 
@@ -31,7 +31,7 @@ public class ModuleAdapter {
 
     public Object getById(Integer id) {
         try {
-            Optional<Module1> rowOptional = moduleRepository.findById(id);
+            Optional<Module> rowOptional = moduleRepository.findById(id);
             if (!rowOptional.isPresent() || rowOptional.isEmpty()) {
                 return new ErrorService(id.toString(), "", this.myClassName, 404);
             }
@@ -71,7 +71,7 @@ public class ModuleAdapter {
 
     public Object save(ModuleDto moduleDto) {
         try {
-            Module1 mod = new Module1();
+            Module mod = new Module();
             if( moduleDto.getId() != null ){
                 mod.setId( moduleDto.getId() );
                 mod.setCode( moduleDto.getCode() );
@@ -94,7 +94,7 @@ public class ModuleAdapter {
 
     public Object delete(Integer id) {
         try {
-            Optional<Module1> row = moduleRepository.findById(id);
+            Optional<Module> row = moduleRepository.findById(id);
             if (!row.isEmpty()) {
                 moduleRepository.deleteById(id);
                 return "Se eliminó el registro con ID: " + id;

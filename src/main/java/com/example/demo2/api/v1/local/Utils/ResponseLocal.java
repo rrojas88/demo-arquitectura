@@ -3,7 +3,7 @@ package com.example.demo2.api.v1.local.Utils;
 
 import com.example.demo2.api.v1.local.proyecto1.auth.UserRolesPrincipal;
 import com.example.demo2.api.v1.local.proyecto1.logs.LogService;
-import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.Log1;
+import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.Log;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class ResponseLocal {
         ZonedDateTime dateTimeNow = this.getDateTimeNow();
         String ip = this.getIpAddr(req);
         
-        Log1 log = new Log1();
+        Log log = new Log();
         log.setCode(this.code);
         log.setMessage(this.message);
         log.setDescription(description);
@@ -116,7 +116,7 @@ public class ResponseLocal {
         log.setMethod(req.getMethod());
         log.setPayload(payload);
 
-        Log1 row = this.logService.save(log);
+        Log row = this.logService.save(log);
         //this.data = row;
     }
     
@@ -159,7 +159,7 @@ public class ResponseLocal {
         ZonedDateTime dateTimeNow = this.getDateTimeNow();
         String ip = this.getIpAddr(req);
         
-        Log1 log = new Log1();
+        Log log = new Log();
         log.setCode(this.code);
         log.setMessage(this.message);
         log.setDescription(description);
@@ -173,7 +173,7 @@ public class ResponseLocal {
         log.setPayload(payload);
         System.out.println( "\n--- LOG:\n" + log.toString() );
         
-        Log1 row = this.logService.save(log);
+        Log row = this.logService.save(log);
     }
     
     

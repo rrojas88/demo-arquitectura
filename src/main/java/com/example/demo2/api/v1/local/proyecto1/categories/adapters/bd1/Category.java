@@ -1,25 +1,23 @@
 
-package com.example.demo2.api.v1.local.proyecto1.cities.adapters.bd1;
+package com.example.demo2.api.v1.local.proyecto1.categories.adapters.bd1;
 
-import com.example.demo2.api.v1.local.proyecto1.cities.adapters.City;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "cities")
-public class City1 extends City {
+@Table(name = "categories")
+public class Category {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( unique = true, nullable = false )
     private Integer id;
     
-    private Integer department_id;
-    private String code;
     private String name;
-    private boolean active;
+    private String image;
     //private Byte active;
+    private boolean active;
 
-    public City1() {
+    public Category() {
         //this.active = 1;
         this.active = true;
     }
@@ -32,28 +30,20 @@ public class City1 extends City {
         this.id = id;
     }
 
-    public Integer getDepartment_id() {
-        return department_id;
-    }
-
-    public void setDepartment_id(Integer department_id) {
-        this.department_id = department_id;
-    }
-    
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     //public Byte getActive() {
@@ -68,6 +58,6 @@ public class City1 extends City {
 
     @Override
     public String toString() {
-        return "City{" + "id=" + id + ", department_id=" + department_id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
+        return "Category{" + "id=" + id + ", name=" + name + ", image=" + image + ", active=" + active + '}';
     }
 }

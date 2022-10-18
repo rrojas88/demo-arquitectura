@@ -1,16 +1,14 @@
 
 package com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1;
 
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol1;
-import com.example.demo2.api.v1.local.proyecto1.users.adapters.User;
+import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "users")
-public class User1 extends User {
+public class User {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -29,12 +27,12 @@ public class User1 extends User {
         joinColumns=@JoinColumn(name="user_id"),
         inverseJoinColumns = @JoinColumn( name = "rol_id")
     )
-    private Set<Rol1> roles = new HashSet<>();
+    private Set<Rol> roles = new HashSet<>();
     
-    public User1(){
+    public User(){
     }
 
-    public User1(String name, String email, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -84,11 +82,11 @@ public class User1 extends User {
         this.active = active;
     }
 
-    public Set<Rol1> getRoles() {
+    public Set<Rol> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Rol1> roles) {
+    public void setRoles(Set<Rol> roles) {
         this.roles = roles;
     }
 

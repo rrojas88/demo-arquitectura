@@ -1,12 +1,11 @@
 
 package com.example.demo2.api.v1.local.proyecto1.modules.adapters.bd1;
 
-import com.example.demo2.api.v1.local.proyecto1.modules.adapters.Module;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "modules")
-public class Module1 extends Module {
+public class Module  {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -20,12 +19,12 @@ public class Module1 extends Module {
     //private Byte active;
     private boolean active;
 
-    public Module1() {
+    public Module() {
         //this.active = 1;
         this.active = true;
     }
 
-    public Module1(String code, String name ) {
+    public Module(String code, String name ) {
         this.code = code;
         this.name = name;
         //this.active = 1;
@@ -33,7 +32,7 @@ public class Module1 extends Module {
     }
     
     //public Department(Integer id, String code, String name, Byte active) {
-    public Module1(Integer id, String code, String name, boolean active) {
+    public Module(Integer id, String code, String name, boolean active) {
         this.id = id;
         this.code = code;
         this.name = name;

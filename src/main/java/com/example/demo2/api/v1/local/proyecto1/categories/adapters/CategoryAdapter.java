@@ -2,8 +2,7 @@
 package com.example.demo2.api.v1.local.proyecto1.categories.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.proyecto1.categories.adapters.bd1.Category1;
-import com.example.demo2.api.v1.local.proyecto1.categories.adapters.bd1.CategoryRepository1;
+import com.example.demo2.api.v1.local.proyecto1.categories.adapters.bd1.Category;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import com.example.demo2.api.v1.local.proyecto1.categories.adapters.bd1.CategoryRepository;
 
 @Service
 public class CategoryAdapter {
     
     @Autowired
-    CategoryRepository1 categoryRepository;
+    CategoryRepository categoryRepository;
     
     private String myClassName = CategoryAdapter.class.getName();
     
@@ -40,7 +40,7 @@ public class CategoryAdapter {
     
     public Object getById(Integer id){
         try {
-            Optional<Category1> rowOptional = categoryRepository.findById(id);
+            Optional<Category> rowOptional = categoryRepository.findById(id);
             if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
                 return new ErrorService("No hay registro", id.toString(), this.myClassName );
             return rowOptional;
@@ -84,7 +84,7 @@ public class CategoryAdapter {
             );
         }
         try {
-            Category1 category = new Category1();
+            Category category = new Category();
             if( categoryDto.getId() != null ){
                 category.setId( categoryDto.getId() );
                 category.setName( categoryDto.getName() );
@@ -109,7 +109,7 @@ public class CategoryAdapter {
     
     public Object delete(Integer id) {
         try {
-            Optional<Category1> rowOptional = categoryRepository.findById(id);
+            Optional<Category> rowOptional = categoryRepository.findById(id);
             if( rowOptional.isPresent() && ! rowOptional.isEmpty() ){
                 Category row = rowOptional.get();
                 

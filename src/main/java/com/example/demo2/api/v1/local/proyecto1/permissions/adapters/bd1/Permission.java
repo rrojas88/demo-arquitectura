@@ -1,12 +1,11 @@
 
 package com.example.demo2.api.v1.local.proyecto1.permissions.adapters.bd1;
 
-import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.Permission;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "permissions")
-public class Permission1 extends Permission {
+public class Permission {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -16,15 +15,15 @@ public class Permission1 extends Permission {
     private Integer action_id;
     private Integer rol_id;
 
-    public Permission1() {
+    public Permission() {
     }
 
-    public Permission1(Integer action_id, Integer rol_id ) {
+    public Permission(Integer action_id, Integer rol_id ) {
         this.action_id = action_id;
         this.rol_id = rol_id;
     }
     
-    public Permission1(Integer id, Integer action_id, Integer rol_id) {
+    public Permission(Integer id, Integer action_id, Integer rol_id) {
         this.id = id;
         this.action_id = action_id;
         this.rol_id = rol_id;

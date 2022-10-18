@@ -4,9 +4,8 @@ package com.example.demo2.api.v1.local.proyecto1.users.adapters;
 import com.example.demo2.api.v1.local.Utils.ErrorService;
 import com.example.demo2.api.v1.local.proyecto1.roles.RolService;
 //import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol1;
-import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.User1;
-import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.UserRepository1;
+import com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1.Rol;
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.User;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.demo2.api.v1.local.proyecto1.users.adapters.bd1.UserRepository;
 
 
 @Service
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAdapter {
     
     @Autowired
-    UserRepository1 userRepository;
+    UserRepository userRepository;
     
     @Autowired
     RolService rolService;
@@ -54,7 +54,7 @@ public class UserAdapter {
     
     public Object getById(Integer id){
         try {
-            Optional<User1> rowOptional = userRepository.findById(id);
+            Optional<User> rowOptional = userRepository.findById(id);
             if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
                 return new ErrorService(id.toString(), "", this.myClassName, 404 );
             return rowOptional;
@@ -129,23 +129,23 @@ public class UserAdapter {
                 return errService;
             }
             
-            User1 user = new User1(
+            User user = new User(
                 userDto.getName(), 
                 userDto.getEmail(), 
                 passBd
             );
             
             // Establecer Roles del Usuario
-            Set<Rol1> roles = new HashSet<>();
-            Optional<Rol1> role_ = (Optional<Rol1>)rolService.getByName("ROLE_LECTURA");
+            Set<Rol> roles = new HashSet<>();
+            Optional<Rol> role_ = (Optional<Rol>)rolService.getByName("ROLE_LECTURA");
             roles.add( role_.get() );
             
             if( userDto.getRoles().contains("Usuario") || userDto.getRoles().contains("Usuario normal") ){
-                Optional<Rol1> role2_ = (Optional<Rol1>)rolService.getByName("ROLE_USUARIO");
+                Optional<Rol> role2_ = (Optional<Rol>)rolService.getByName("ROLE_USUARIO");
                 roles.add( role2_.get() );
             }
             if( userDto.getRoles().contains("Admin") || userDto.getRoles().contains("Administrador") ){
-                Optional<Rol1> role3_ = (Optional<Rol1>)rolService.getByName("ROLE_ADMIN");
+                Optional<Rol> role3_ = (Optional<Rol>)rolService.getByName("ROLE_ADMIN");
                 roles.add( role3_.get() );
             }
             user.setRoles(roles);

@@ -1,34 +1,24 @@
 
-package com.example.demo2.api.v1.local.proyecto1.roles.adapters.bd1;
+package com.example.demo2.api.v1.local.proyecto1.cities.adapters.bd1;
 
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.Rol;
-import com.example.demo2.api.v1.local.proyecto1.roles.adapters.RolName;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 
 @Entity
-@Table(name = "roles")
-public class Rol1 extends Rol {
+@Table(name = "cities")
+public class City {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( unique = true, nullable = false )
     private Integer id;
     
-    @NotNull
-    //@Enumerated(EnumType.STRING) //Este
-    //private RolName name; //Este
+    private Integer department_id;
+    private String code;
     private String name;
-    //private Byte active;
     private boolean active;
-    
-    public Rol1(){
-    }
+    //private Byte active;
 
-    //public Rol1(@NotNull RolName name) {
-    public Rol1(@NotNull String name) {
-        this.name = name;
+    public City() {
         //this.active = 1;
         this.active = true;
     }
@@ -41,12 +31,26 @@ public class Rol1 extends Rol {
         this.id = id;
     }
 
-    //public RolName getName() { // Este
+    public Integer getDepartment_id() {
+        return department_id;
+    }
+
+    public void setDepartment_id(Integer department_id) {
+        this.department_id = department_id;
+    }
+    
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getName() {
         return name;
     }
 
-    //public void setName(RolName name) {
     public void setName(String name) {
         this.name = name;
     }
@@ -63,7 +67,6 @@ public class Rol1 extends Rol {
 
     @Override
     public String toString() {
-        return "Rol1{" + "id=" + id + ", name=" + name + ", active=" + active + '}';
+        return "City{" + "id=" + id + ", department_id=" + department_id + ", code=" + code + ", name=" + name + ", active=" + active + '}';
     }
-    
 }

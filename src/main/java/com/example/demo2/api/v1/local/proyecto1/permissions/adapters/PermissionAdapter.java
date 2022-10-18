@@ -2,18 +2,18 @@
 package com.example.demo2.api.v1.local.proyecto1.permissions.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.bd1.Permission1;
-import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.bd1.PermissionRepository1;
+import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.bd1.Permission;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo2.api.v1.local.proyecto1.permissions.adapters.bd1.PermissionRepository;
 
 
 @Service
 public class PermissionAdapter {
 
     @Autowired
-    PermissionRepository1 permissionRepository;
+    PermissionRepository permissionRepository;
 
     private String myClassName = PermissionAdapter.class.getName();
 
@@ -31,7 +31,7 @@ public class PermissionAdapter {
 
     public Object getById(Integer id) {
         try {
-            Optional<Permission1> rowOptional = permissionRepository.findById(id);
+            Optional<Permission> rowOptional = permissionRepository.findById(id);
             if (!rowOptional.isPresent() || rowOptional.isEmpty()) {
                 return new ErrorService(id.toString(), "", this.myClassName, 404);
             }
@@ -71,7 +71,7 @@ public class PermissionAdapter {
 
     public Object save(PermissionDto permissionDto) {
         try {
-            Permission1 permission = new Permission1();
+            Permission permission = new Permission();
             if( permissionDto.getId() != null ){
                 permission.setId( permissionDto.getId() );
                 permission.setAction_id(permissionDto.getAction_id());
@@ -93,7 +93,7 @@ public class PermissionAdapter {
 
     public Object delete(Integer id) {
         try {
-            Optional<Permission1> row = permissionRepository.findById(id);
+            Optional<Permission> row = permissionRepository.findById(id);
             if (!row.isEmpty()) {
                 permissionRepository.deleteById(id);
                 return "Se eliminó el registro con ID: " + id;

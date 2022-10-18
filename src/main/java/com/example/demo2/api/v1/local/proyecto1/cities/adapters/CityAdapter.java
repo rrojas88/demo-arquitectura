@@ -2,7 +2,7 @@
 package com.example.demo2.api.v1.local.proyecto1.cities.adapters;
 
 import com.example.demo2.api.v1.local.Utils.ErrorService;
-import com.example.demo2.api.v1.local.proyecto1.cities.adapters.bd1.City1;
+import com.example.demo2.api.v1.local.proyecto1.cities.adapters.bd1.City;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class CityAdapter {
     
     public Object getById(Integer id){
         try {
-            Optional<City1> rowOptional = cityRepository.findById(id);
+            Optional<City> rowOptional = cityRepository.findById(id);
             if( ! rowOptional.isPresent() || rowOptional.isEmpty() )
                 return new ErrorService(id.toString(), "", this.myClassName, 404 );
             return rowOptional;
@@ -74,7 +74,7 @@ public class CityAdapter {
     
     public Object save(CityDto cityDto ){
         try {
-            City1 city = new City1();
+            City city = new City();
             if( cityDto.getId() != null ){
                 city.setId( cityDto.getId() );
                 city.setDepartment_id( cityDto.getDepartment_id() );
@@ -100,7 +100,7 @@ public class CityAdapter {
 
     public Object delete(Integer id) {
         try {
-            Optional<City1> row = cityRepository.findById(id);
+            Optional<City> row = cityRepository.findById(id);
             if( ! row.isEmpty() ){
                 cityRepository.deleteById(id);
                 return "Se eliminó el registro con ID: " + id;

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface MytaskRepository2 extends JpaRepository<Mytask2, Integer>{
+public interface MytaskRepository extends JpaRepository<Mytask, Integer>{
     
-    public abstract Optional<Mytask2> findByName(String name);
+    public abstract Optional<Mytask> findByName(String name);
     
-    public abstract Optional<Mytask2> findById(Integer id);
+    public abstract Optional<Mytask> findById(Integer id);
 
 }

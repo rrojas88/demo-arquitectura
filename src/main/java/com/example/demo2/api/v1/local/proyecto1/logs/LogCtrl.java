@@ -2,7 +2,7 @@
 package com.example.demo2.api.v1.local.proyecto1.logs;
 
 
-import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.Log1;
+import com.example.demo2.api.v1.local.proyecto1.logs.adapters.bd1.Log;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class LogCtrl {
     @GetMapping( path = "/test")
     public ResponseEntity<?> getAll( HttpServletRequest req ){
         System.out.println("\n... ... TestCtrl -> Pasa x1 ");
-        Log1 log = new Log1();
+        Log log = new Log();
         log.setCode(300);
         log.setMessage("Prueba");
         log.setDescription("Probando");
