@@ -66,15 +66,15 @@ public class CityController {
     }
     
     
-    @GetMapping( path = "/{id}")
+    @GetMapping( path = "/id/{id}")
     public ResponseEntity<?> getById(
         @PathVariable("id") Integer id,
         HttpServletRequest req
     )
-    {
+    {System.out.println( "----- ----- Entra en ByID:  " );
         ResponseLocal response = new ResponseLocal( logService );
-        Object permission = permissionService.validate( req, this.module, "getOne", response );
-        if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        //Object permission = permissionService.validate( req, this.module, "getOne", response );
+        //if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
         
         try {
             Object row = this.cityService.getById(id);
@@ -105,7 +105,7 @@ public class CityController {
         @RequestParam("name") String name,
         HttpServletRequest req
     )
-    {
+    {System.out.println( "----- ----- Entra en QUERY:  " );
         ResponseLocal response = new ResponseLocal( logService );
         Object permission = permissionService.validate( req, this.module, "getOne", response );
         if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
@@ -119,6 +119,40 @@ public class CityController {
                 req
             );
             return new ResponseEntity<Object>( response, HttpStatus.OK );
+        }
+        catch (Exception e) {
+            response.setError( HttpStatus.BAD_REQUEST.value(), 
+                "No se pudo obtener la Ciudad", 
+                e.getMessage(), 
+                UtilsLocal.emptyErrorList(),
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, HttpStatus.BAD_REQUEST );
+        }
+    }
+    
+    
+    @GetMapping( path = "/sql/{id}")
+    public ResponseEntity<?> getBySql(
+        @PathVariable("id") Integer id,
+        HttpServletRequest req
+    )
+    {System.out.println( "----- ----- Entra en SQL:  " );
+        ResponseLocal response = new ResponseLocal( logService );
+        //Object permission = permissionService.validate( req, this.module, "getOne", response );
+        //if( permission != null ) return new ResponseEntity<>( permission, HttpStatus.FORBIDDEN );
+        
+        try {
+            Object row = this.cityService.getBySql(id);
+            HttpStatus httpStatus = response.validateService( row, 
+                "Ciudad obtenida",
+                this.myClassName, 
+                null, 
+                req
+            );
+            return new ResponseEntity<>( response, httpStatus );
         }
         catch (Exception e) {
             response.setError( HttpStatus.BAD_REQUEST.value(), 

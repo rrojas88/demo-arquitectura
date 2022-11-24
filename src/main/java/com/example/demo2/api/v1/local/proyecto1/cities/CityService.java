@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CityService {
     
-    //@Autowired
-    //CityRepository cityRepository;
     @Autowired
     CityAdapter cityAdapter;
     
@@ -60,6 +58,19 @@ public class CityService {
     public Object getByDepartment_id(Integer department_id){
         try {
             return cityAdapter.getByDepartment_id(department_id);
+        }
+        catch (Exception e) {
+            return new ErrorService(
+                "No se obtuvieron ciudades", 
+                e.getMessage(), 
+                this.myClassName
+            );
+        }
+    }
+    
+    public Object getBySql(Integer department_id){
+        try {
+            return cityAdapter.findAllBySql(department_id);
         }
         catch (Exception e) {
             return new ErrorService(
